@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+		<title>pablo - tech class for every child</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The best collection of things to do nearby. Tag your event tweets with #EVSTK to get included.">
+
+		<base href="/">
+	
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+
+  <style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+body, html {
+    height: 100%;
+    line-height: 1.8;
+}
+/* Full height image header */
+.bgimg {
+    /*background-position: center;
+    background-size: cover;
+    background-image: url("./images/boyny.jpg");*/
+	  background-color: #79C1C6;
+	  height:100vh;
+}
+
+.w3-navbar li a {
+    padding: 16px;
+    float: left;
+}
+ #menu {
+  position: fixed;
+  left: 3%;
+  top: 30%;
+}   
+#menu2 {
+  position: fixed;
+  left: 3%;
+  top: 40%;
+}  
+.w3-navbar{
+    background:transparent;
+    border:none !important;
+}    
+</style>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top  ">
+  <ul class="w3-navbar  w3-card-1" id="myNavbar">
+
+    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+    <li>
+      <a href="javascript:void(0)" class="w3-left " onclick="w3_open()">
+        <i class="fa fa-bars w3-xlarge w3-padding-right w3-padding-left dynamic-color"></i>
+      </a>
+    </li>
+		
+		<a href="/" class="w3-xxlarge w3-left dynamic-color" style="text-decoration:none; font-weight:bold; ">pablo</a>
+		<a href="/" class="w3-bar-item w3-btn   w3-round-large w3-white w3-border w3-border-white   w3-medium w3-margin-top w3-margin-right w3-right w3-hide-small w3-hide-medium " style=" ">Login</a>
+  </ul>
+</div>
+
+<!-- Sidenav on small screens when clicking the menu icon -->
+<nav class="w3-sidenav  w3-white w3-card-2 w3-animate-left" style="display:none;z-index:4; width:320px;" id="mySidenav">
+  <a href="javascript:void(0)" onclick="w3_close()" class="w3-large w3-padding-16">Close ×</a>
+  <a href="/chicago" onclick="w3_close()" class="w3-large w3-padding-16">events</a>
+  <a href="#posting" onclick="w3_close()" class="w3-large w3-padding-16">post</a>
+  <a href="#faq" onclick="w3_close()" class="w3-large w3-padding-16">faq</a>
+  <a href="#api" onclick="w3_close()" class="w3-large w3-padding-16">api</a>
+</nav>
+
+<!-- Overlay -->
+<div class="w3-overlay" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+	
+<!-- Header with full-height image -->
+<header class="bgimg" id="home" style="">
+	  <div class="w3-row-padding " style="height:90vh;"> 
+    <div class="w3-hide-medium w3-hide-small w3-col m5   " style="margin-top:150px;">
+  			<div class="w3-container " style="text-align:center;">
+					<img src="./img/laptop.png">
+				</div>
+		</div>
+    <div class="w3-hide-large w3-mobile  " style="margin-top:150px">
+  			<div class="w3-container " style="text-align:center;">
+					<img src="./img/laptop_small.png">
+				</div>
+		</div>
+			
+		<div class="w3-col m7 w3-hide-medium w3-hide-small" style=" margin-top:150px">
+  		<div class="w3-container  w3-text-white" style="text-align:center;">
+    		<span class="w3-xxlarge">Every student should have tech class in school. Now they can.</span><br>
+    		<div style="text-align:center;"><a href="/dashboard" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  ">Get Started</a></div>
+ 			</div> 
+		</div>
+		<div class="w3-mobile w3-hide-large " style="">
+  		<div class="w3-container  w3-text-white" style="text-align:center;">
+    		<span class="w3-xlarge ">Every student should have tech class in school. Now they can.</span><br>
+    		<div style="text-align:center;"><a href="/chicago" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  ">Get Started</a></div>
+    		<div style="text-align:center;margin-top:30px; "><a href="/chicago" class=" w3-padding-large w3-medium" style="text-decoration:none">Have an Account?</a></div>
+ 			</div> 
+		</div>			
+	</div>
+	<div class="w3-container w3-center w3-hide-small w3-hide-medium  " style="background-color:#414141;height:10vh">
+		<div style="height:1vh">&nbsp;</div>
+			<span class="w3-xlarge w3-text-white" style="8vh">Self-guided tech cirriculum for K-12.  Choose your level and go.</span>
+		<div style="height:1vh">&nbsp;</div>
+	</div>	
+	<div class="w3-container w3-center w3-hide-large w3-padding-8   " style="background-color:#414141;height:10vh">
+			<span class="w3-xlarge w3-text-white" style="">Self-guided tech for K-12.</span>
+	</div>		
+	</header>
+
+<!--a href="/designs"  id="menu" class="w3-btn w3-btn-floating-large w3-red"> <i class="fa fa-reply"></i></a>
+<a href="../downloads/cv2.zip"  onclick="ga('send', {hitType: 'event',  eventCategory: 'Template',  eventAction: 'download',  eventLabel: 'cv2'});" target="_blank" id="menu2" class="w3-btn w3-btn-floating-large w3-red"> <i class="fa fa-cloud-download"></i></a-->
+
+<!-- About Section -->
+<!--div class="w3-container w3-padding-128" id="about">
+  <h2 class="w3-center">My Story</h2>
+  <p class="w3-center w3-large">I wanted to design cars when I was 9 </p>
+  
+  <p class="w3-center w3-padding-jumbo" >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+  
+  <div class="w3-row-padding w3-center" style="margin-top:64px">
+    <div class="w3-third">
+      <i class="fa fa-handshake-o w3-margin-bottom w3-jumbo w3-center"></i>
+      <p class="w3-large">Team Player</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+    </div>
+    <div class="w3-third">
+      <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
+      <p class="w3-large">Passion</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+    </div>
+    <div class="w3-third">
+      <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
+      <p class="w3-large">Hard Work</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+    </div>
+  </div>
+
+  <div style="text-align:center;"><a href="#experience" class="w3-btn  w3-middle w3-hover-black w3-text-black w3-transparent w3-round-large w3-border w3-border-black  w3-padding-large w3-large w3-margin-top  ">Experience</a></div>
+
+</div-->
+
+	<style>
+
+		.new-story h2 {
+    /**font-family: "webfont",Helvetica,Arial,sans-serif;**/
+    font-size: 30px;
+    font-size: 1.875rem;
+    line-height: 40px;
+    line-height: 2.5rem;
+    color: #586062;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 5px;
+}
+		.new-story p {
+    font-size: 22px;
+    font-size: 1.375rem;
+    line-height: 26px;
+    line-height: 1.625rem;
+    color: #586062;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 20px;
+}
+	</style>
+	
+
+	
+
+	
+<!-- Interests -->
+<div class="w3-container  w3-padding-64" id="interests">
+  <div class="w3-row-padding"> 
+    <div class="w3-col m6 new-story" style=" text-align:right; margin-top:30px">
+      <h2>Meet Pablo</h2>
+      <p>Pablo will guide your child or student through a tech class that meets once or twice per week, for students K - 12.</p>
+      <p><a href="/chicago" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">Try it</a></p>
+    </div>
+    <div class="w3-col m6">
+      <img class="w3-image w3-round-large" src="./img/robot.png" alt="iphone" width="" height="">
+    </div>
+  </div>
+</div>
+	
+<div class="w3-container  w3-padding-64">
+  <div class="w3-row-padding ">
+    <div class="w3-col m6 new-story" style="text-align:right">
+      <img class="w3-image w3-round-large" src="./img/browser.png" alt="laptop" style="margin-right:30px">
+    </div>
+    <div class="w3-col m6 new-story" style="  margin-top:20px">
+      <h2>Lessons</h2>
+      <p>The reason we have so many events listed is that it's simple to post.  Just include #EVSTK when you tweet your event description.  That's it.</p>
+     <p><a href="#posting" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">Posting Tips</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="w3-container  w3-padding-64" id="">
+  <div class="w3-row-padding"> 
+    <div class="w3-col m6 new-story" style=" text-align:right; margin-top:20px">
+      <h2>Pablo for School</h2>
+      <p>You can include our list of events, filtered by geography and category, on your site using our Partner API.</p>
+      <p><a href="https://developer.eventstack.co" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">API</a></p>
+    </div>
+    <div class="w3-col m6">
+      <img class="w3-image w3-round-large" src="./img/monitor.png" alt="developer" style="margin-left:30px">
+    </div>
+  </div>
+</div>
+
+		<div class="w3-container w3-row w3-center  w3-padding-8" style="background-color:#414141;">
+      <span class="w3-large w3-text-white">Join thousands of people using eventstack who find things to do nearby.</span>
+</div>	
+
+
+
+
+
+<!-- FAQ -->
+<div class="w3-container  w3-padding-64" style="margin-top:60px" id="faq">
+  <div class="w3-row-padding"> 
+    <div class="w3-col m6 new-story" style=" text-align:right; ">
+			<h2>What is this?</h2>
+      <p>We're listening to twitter for our #EVSTK, and organizing the most complete list of things you can do nearby.  The simplicity of the posting process leads to more a more complete list, including more obscure and interesting events </p>
+    </div>
+    <div class="w3-col m6">
+			<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Join us for an easter egg hunt on the library lawn. Tomorrow at 8am. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/KIDS?src=hash">#KIDS</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/852263738933641217">April 12, 2017</a></blockquote>
+		</div>
+  </div>
+</div>	
+
+<div class="w3-container w3-padding-64" style="margin-top:60px" id="posting">
+  <div class="w3-row-padding ">
+    <div class="w3-col m6 ">
+				<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr">Yoga in the park tomorrow morning at 8am sharp, 4/23. Start your weekend off right at Thomas Park near 5th - $8. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/yoga?src=hash">#yoga</a> <a href="https://twitter.com/hashtag/fitness?src=hash">#fitness</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723510612035248130">April 22, 2016</a></blockquote>
+    </div>
+    <div class="w3-col m6 new-story" style="">
+      <h2>How can I add my event?</h2>
+      <p>It's simple. Tweet the details of your event like you always do, and include #EVSTK and a date (11/23, 11/23/15, 13 Jan, or 'today', 'tomorrow').  </p>
+			<p>If you've posted previously, we already have your info. If not, we'll reply back asking for an address.  </p>
+			<p>And that's it - your event is listed.</p>
+    </div>
+  </div>
+</div>
+	
+<div class="w3-container w3-padding-64" style="margin-top:60px"  id="">
+  <div class="w3-row-padding"> 
+    <div class="w3-col m6 new-story" style=" text-align:right; ">
+			<h2>How will you know where the event is?</h2>
+      <p>If your event tweet includes our #EVSTK and a date, and you've never posted with us before, we'll reply back asking for the physical address of the event.  In your reply, include:</p>
+			<p style=" text-align:center; ">
+				<br><b>#EVSTK</b> routes your tweet to our servers. <b>required </b>
+				<br><b>#ADD</b> and the physical address of your event. <b>required </b>
+				<br><b>#PHO</b> and the phone number for your event. <b>optional</b>
+				<br><b>#URL</b> and the url for your event. <b>optional</b>
+			</p> 
+			<p style=" text-align:right; ">We'll save that address and use it for every event your tweet after that.  Here are a few sample address tweet:</p>
+		</div>
+    <div class="w3-col m6">
+			<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/ADD?src=hash">#ADD</a> 1000 N. Sheffield Chicago, IL</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723514118070767616">April 22, 2016</a></blockquote>
+			<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/ADD?src=hash">#ADD</a> 2000 N. Ashland Chicago, IL <a href="https://twitter.com/hashtag/URL?src=hash">#URL</a> <a href="https://t.co/ch01tH6vS5">https://t.co/ch01tH6vS5</a> <a href="https://twitter.com/hashtag/IMG?src=hash">#IMG</a> <a href="https://t.co/mOGZXGQPuE">https://t.co/mOGZXGQPuE</a> <a href="https://twitter.com/hashtag/PHO?src=hash">#PHO</a> 773-123-4567</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723513146326048768">April 22, 2016</a></blockquote>
+		</div>
+  </div>
+</div>		
+
+<div class="w3-container w3-padding-64" style="margin-top:60px" id="" >
+  <div class="w3-row-padding new-story">
+    <div class="w3-col m6">
+				<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr">Yoga in the park tomorrow morning at 8am sharp, 4/23. Start your weekend off right at Thomas Park near 5th - $8. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/yoga?src=hash">#yoga</a> <a href="https://twitter.com/hashtag/fitness?src=hash">#fitness</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723510612035248130">April 22, 2016</a></blockquote>
+    </div>
+    <div class="w3-col m6 new-story" style="">
+      <h2>How can I categorize my event?</h2>
+      <p>We are scanning your event tweet for: #kids #music #art #free #fitness #festivals #food #performance #nightlife</p>
+  
+  </div>
+</div>	
+ 
+<div class="w3-container w3-padding-64" style="margin-top:60px" id="api">
+  <div class="w3-row-padding"> 
+    <div class="w3-col m6 new-story" style=" text-align:right; ">
+			<h2>I need to take my event down</h2>
+      <p>You can remove any event that came from your twitter handle by tweeting #EVSTK #DELETE #ID _responseID_. See the example:</p>
+ 			<br>    
+ 			<br>    
+			<h2>Can I include a list of events on my site?</h2>
+			<p>Sign up for a <a href="https://developer.eventstack.co">Partner API key</a> and get started.</p>  
+		</div>
+    <div class="w3-col m6">
+<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/eventstackco">@eventstackco</a> 58dc3d66fa50bdd24bc05159 Thanks for posting to EventStack. We have your address. Your event is listed!</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847222868152688644">March 29, 2017</a></blockquote>
+<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="ht" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/DELETE?src=hash">#DELETE</a> <a href="https://twitter.com/hashtag/ID?src=hash">#ID</a> 58dc3d66fa50bdd24bc05159</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847269477607657472">March 30, 2017</a></blockquote>
+<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/eventstackco">@eventstackco</a> This event has been removed:58dc3d66fa50bdd24bc05159</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847285434623303682">March 30, 2017</a></blockquote>
+		</div>
+  </div>
+</div>		
+
+
+
+
+</div>
+						<!--/div-->
+					</div>
+				</div>
+				<!--div class="row">
+					<div class="col-md-3 text-center">
+						<div class="mz-module-about">
+							<i class="fa fa-briefcase ot-circle"></i>
+							<h3>Web Development</h3>
+							<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+						</div>
+					</div>
+					<div class="col-md-3 text-center">
+						<div class="mz-module-about">
+							<i class="fa fa-photo ot-circle"></i>
+							<h3>Visualisation</h3>
+							<p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe</p>
+						</div>
+					</div>
+					<div class="col-md-3 text-center">
+						<div class="mz-module-about">
+							<i class="fa fa-camera-retro ot-circle"></i>
+							<h3>Photography</h3>
+							<p>Accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
+						</div>
+					</div>
+					<div class="col-md-3 text-center">
+						<div class="mz-module-about">
+							<i class="fa fa-cube ot-circle"></i>
+							<h3>UI/UX Design</h3>
+							<p> Itaque earum rerum hic tenetur a sapiente, ut aut reiciendis maiores</p>
+						</div>
+					</div>
+				</div-->
+			</div>
+			<!-- /.container -->
+		</section>
+
+  
+	
+<!-- Add my city -->
+<div class="w3-container w3-row w3-center  w3-padding-64" style="background-color:#414141;">
+      <span class="w3-large w3-text-white">Don't see your city listed?  Use #NewCity.</span>
+	<div style="text-align:center;"><a href="https://twitter.com/intent/tweet?button_hashtag=NewCity&text=%40eventstackco%20Please%20include%20my%20fair%20city%20named%20xyz" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  "><i class="fa fa-twitter">eventstackco</i></a></div>
+</div>
+	
+	<footer class="w3-container w3-row   w3-padding-64">
+		<div class="w3-col s1">&nbsp;
+		</div>
+		<div class="w3-col s4">
+    <span class="" style="font-weight:700">eventstack</span>
+    <br><a href="/chicago" style="text-decoration:none">cities</a>
+    <br><a href="/chicago" style="text-decoration:none">events</a>
+    <br><a href="#faq" style="text-decoration:none">posting</a>
+    <br><a href="" style="text-decoration:none">about</a>
+    <br><a href="https://developer.eventstack.co" style="text-decoration:none">api</a>
+  </div>
+  <div class="w3-col s4">
+    <span class="" style="font-weight:700">support</span>
+    <br><a href="#faq" style="text-decoration:none">faq</a>
+    <br><a href="" style="text-decoration:none">terms</a>
+    <br><a href="mailto:hello@eventstack.co" style="text-decoration:none"><i class="fa fa-envelope-o "></i>&nbsp;hello@eventstack.co</a>
+    <br><a href="https://twitter.com/eventstackco" style="text-decoration:none"><i class="fa fa-twitter"></i>&nbsp;eventstackco</a>
+  </div>
+  
+</footer>
+ 
+
+<!-- Add Google Maps -->
+<script>
+
+
+
+
+// Toggle between showing and hiding the sidenav when clicking the menu icon
+var mySidenav = document.getElementById("mySidenav");
+
+function w3_open() {
+    if (mySidenav.style.display === 'block') {
+        mySidenav.style.display = 'none';
+			  document.getElementById("myOverlay").style.display = "none";
+
+    } else {
+        mySidenav.style.display = 'block';
+			  document.getElementById("myOverlay").style.display = "block";
+
+    }
+}
+
+// Close the sidenav with the close button
+function w3_close() {
+    mySidenav.style.display = "none";
+	  document.getElementById("myOverlay").style.display = "none";
+
+}
+  
+
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  
+<script> 
+  $(function() {
+  $('a[href*=#]:not([href=#])').click(function() {
+    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+      var target = $(this.hash);
+      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+      if (target.length) {
+        $('html,body').animate({
+          scrollTop: target.offset().top
+        }, 1000);
+        return false;
+      }
+    }
+  });
+}); 
+  
+ 
+$(document).ready(function(){       
+   var scroll_start = 0;
+   var startchange = $('.w3-navbar');
+   var offset = startchange.offset();
+   $('.dynamic-color').css('color', 'white');
+
+   $(document).scroll(function() { 
+      scroll_start = $(this).scrollTop();
+      if(scroll_start > offset.top) {
+          $('.w3-navbar').css('background-color', 'white');
+          $('.dynamic-color').css('color', 'grey');
+      } else {
+          $('.w3-navbar').css('background-color', 'transparent');
+          $('.dynamic-color').css('color', 'white');
+       }
+   });
+});  
+
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-97700376-1', 'auto');
+  ga('send', 'pageview');
+
+</script>   
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<title>Pablo Classroom</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="icon" href="./img/favicon-rocket.ico" type="image/x-icon" />
+  <style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+body, html {height: 100%}
+.bgimg {
+    /**background-image: url('./img/forest.jpg');**/
+    min-height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+#menu {
+  position: fixed;
+  left: 3%;
+  top: 30%;
+}      
+#menu2 {
+  position: fixed;
+  left: 3%;
+  top: 40%;
+}  
+</style>
+<body>
+
+<div class="bgimg w3-display-container w3-animate-opacity ">
+
+  <div class="w3-display-middle w3-text-black" >
+    <h1 class="w3-jumbo w3-animate-top w3-hide-small  " style=" text-align:center;">pablo</h1>
+    <h1 class="w3-xxlarge w3-animate-top w3-hide-medium w3-hide-large" style="font-weight:bold; text-align:center;"><i class="fa fa-rocket  w3-hover-text-light-blue"></i>pablo</h1>
+    <h3 class=" " style=" text-align:center;">Guided tech class for K-12.  We're working on our first release.</h3>
+    
+       <div style="text-align:center;" ><a onclick="document.getElementById('id01').style.display='block'" class="w3-btn  w3-text-black w3-round-large w3-border w3-border-black w3-transparent w3-padding-large w3-large w3-margin-top  " style="text-align:center;" >be first to know</a></div>
+
+   </div>
+  <div class="w3-display-bottomleft w3-padding-large w3-text-black">
+  <div class="w3-xlarge w3-section">
+    <i class="fa fa-instagram w3-hover-text-purple"></i>
+    <i class="fa fa-twitter w3-hover-text-light-blue"></i>
+  </div> 
+  </div>
+</div>
+
+      <!-- newsletter modal -->
+<div id="id01" class="w3-modal">
+  <div class="w3-modal-content w3-card-8 w3-animate-zoom w3-padding-jumbo w3-round" style="max-width:600px">
+    <div class="w3-container w3-white w3-center">
+      <span onclick="document.getElementById('id01').style.display='none'" class="w3-closebtn w3-hover-text-grey w3-margin">x</span>
+  
+      <form method="post" action="form_sender.php" ]>
+        <input class="w3-input " type="text" placeholder="email" name="email">
+        <div class="w3-middle">
+          <button onclick="document.getElementById('id01').style.display='none'"  type="submit" class="w3-btn w3-black w3-round w3-margin">Join</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-97700376-1', 'auto');
+  ga('send', 'pageview');
+
+</script>  
+  
+</body>
+</html>
