@@ -7,16 +7,22 @@ angular.module('klassAboutCtrl', ['ui.bootstrap'])
 	$scope.thisKlass = klassRecord.data;
 	
 	$log.log('thisKlass:' + JSON.stringify(klassRecord.data) );
-	
+	$scope.thisUsername = $routeParams.username;	 
+  $scope.thisKlassNum = $routeParams.klassnum;	 
+
 			$scope.user = user.data;
-			$scope.userId = user.data._id;
-			$scope.email = user.data.local.email;
-			$scope.fname = user.data.firstName;
+			//$scope.userId = user.data._id;
+			//$scope.email = user.data.local.email;
+			//$scope.fname = user.data.firstName;
 
 	$scope.isReadOnly = true;
 
 	$scope.setEditMode = function() {
 			$scope.isReadOnly = false;
+	};
+	
+	$scope.togglePoints = function(newval) {
+			$scope.thisKlass.pointsOn = newval;
 	};
 	
 		$scope.cancelEditMode = function() {
@@ -51,11 +57,11 @@ angular.module('klassAboutCtrl', ['ui.bootstrap'])
     $location.path('/'+view); // path not hash
   };
 
-	$scope.classView = function(id){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
-		else 
-    	$location.path('/class/' + id);
+	$scope.classView = function(username, klassNum){
+	//	if ($scope.user.userType == "student")
+  //  	$location.path('/studentclass/' + id);
+	//	else 
+    	$location.path('/educate/' + username + '/' + klassNum);
   };
 	
 	$scope.goAssignments = function() {

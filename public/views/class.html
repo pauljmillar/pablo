@@ -1,7 +1,9 @@
 <div layout="column"  flex>
 
   <!--section layout="row" flex=""-->
+	
 
+ 
 
 		<!-- ANGULAR MATERIAL SIDENAV LEFT -->
   <md-sidenav md-component-id="left" class="md-sidenav-left" >
@@ -11,36 +13,75 @@
      <md-content>
       <md-list flex>
         <!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
-        <md-list-item class="md-2-line" ng-click="changeView(dashboard)" >
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
 					<i class="material-icons md-avatar" >home</i>
           <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
         </md-list-item>
-			<md-divider ></md-divider>
-        <md-list-item class="md-2-line" ng-click="goAssignments()">
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
 					<i class="material-icons md-avatar" >assignment</i>
           <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
         </md-list-item>
-				        <md-subheader class="md-no-sticky">Teaching</md-subheader>
+				<md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+       	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
 				 </md-list-item>
 	<!--only show the following stream, student, and about links on mobile view -->
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id)" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>stream</h3></div>
 					</md-list-item>
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/students')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>students</h3></div>
 					</md-list-item>					
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/about')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>about</h3></div>
 					</md-list-item>
 				</div>
+
+			<md-subheader ng-show="!user" class="md-no-sticky">Standard Curriculum</md-subheader>
+				<div ng-show="!user">
+	
+				<md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>			
+					
+				</div>				
+				
 
 			 </md-list>
 		</md-content>
@@ -50,7 +91,7 @@
 
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;" >
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
       <div class="md-toolbar-tools">
         <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
           <i class="material-icons">menu</i>
@@ -60,19 +101,19 @@
         </h1>
 				
         <span flex></span>
-			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile">
-      <md-nav-item md-nav-click="classView(thisKlass._id)"  name="stream">Stream</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/students')" name="students">Students</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/about')"  name="about">About</md-nav-item>
+			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile" ng-show="(user && user.userType == student) || (user && user.isPremium == true && user.username == thisUsername)" >
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)"  name="stream">Stream</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" name="students">Students</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')"  name="about">About</md-nav-item>
     </md-nav-bar>
 			  <span flex></span>
 		
-				<md-button ng-show="user._id == '58cab7d8796c46353244cf54'" class="md-raised" aria-label="Sign up" href="/signup" target="_self">Sign Up</md-button>
+				<md-button ng-show="!user" class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
 
-			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
+			<md-menu ng-show="user" md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button  ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -94,11 +135,11 @@
       </md-menu-content>
     </md-menu>		
       </div>
+</md-toolbar>	
 
 			<!-- /ANGULAR MATERIAL TOOLBAR -->
 
 
-</md-toolbar>	
 
 	    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;">
 
@@ -107,17 +148,38 @@
 	<div class="row">
 		<div class="col-md-3">
 			
-<!--show class name here in a card if on mobile -->			
-			<md-card class="onlyOnMobile">
-			<div class="panel">
-				<div class="panel-heading">
-					<h3 class="" style="text-align:center">{{thisKlass.name}}</h3>
-				</div>
-			</div><!--/panel--->
+
+		<md-card style="border-radius:20px">
+		 <md-list flex>
+       <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round" dynamic="true" avatarcustombgcolor="rgb(255,87,34)"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>
+				</md-list>
 			</md-card>
 			
-			<md-card>
-			<div class="panel">
+			<!--md-card style="border-radius:20px">
+			<div class="panel" style="border-radius:20px 20px 0 0">
 				<div class="panel-heading">
 					<h4 class="">Assignments <a class="text-muted" ng-href="/assignments"> all</a></h4>
 					<hr>
@@ -141,22 +203,14 @@
 				</div>					
 					
 				</div>
-			</div><!--/panel--->
-			</md-card>
+			</div>
+			</md-card-->
 	
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
-					<h4 class="">Join Code</h4>
-					<h5 class="">{{thisKlass.joinCode}}</h5>
-					<br/>
-				</div>
-			</div><!--/panel--->
-			</md-card>
+
 
 			<!--Leaderboard -->
-			<md-card ng-show="thisKlass.pointsOn">
-			<div class="panel">
+			<!--md-card ng-show="thisKlass.pointsOn" style="border-radius:20px">
+			<div class="panel" style="border-radius:20px 20px 0 0">
 				<div class="panel-heading">
 					<h4 class="">Leaderboard</h4>
 					<md-divider></md-divider>				
@@ -167,8 +221,8 @@
   					</md-list-item>
 					</md-list>				
 				</div>
-			</div><!--/panel--->
-			</md-card>	
+			</div>
+			</md-card-->	
 	
 				
 				</div> <!--/end 3 col width-->
@@ -182,15 +236,15 @@
 	
 		<div class="col-md-8">
 			<!--default block-->
-			<md-card ng-hide="assignmentGroupList.length > 0">        
- 				<md-content layout-padding>
+			<md-card ng-hide="assignmentGroupList.length > 0" style="border-radius: 20px">        
+ 				<md-content layout-padding style="border-radius:20px 20px 0 0">
 					<div layout="row">
 						<div layout="column" flex>
-							<h2>Welcome to {{thisKlass.name}}.</h2>
+							<h2>Welcome to {{thisKlass.name}} - {{thisKlass.klassNum}}</h2>
             	<span class="md-subhead"> {{ thisKlass.shortDesc }}</span>
 						</div>
 						<div layout="row" flex="nogrow">	
-						<md-button  ng-click="classView(thisKlass._id+'/about')" class="md-icon-button" aria-label="delete">
+						<md-button ng-hide="!user || user.username != thisUsername" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" class="md-icon-button" aria-label="edit">
 							<md-icon class="material-icons">edit</md-icon></md-button>
 						</div>
 					</div>
@@ -219,15 +273,16 @@
 }</style>
 			
 
-			<md-card ng-show="assignmentGroupList.length > 0">        
- 				<md-content layout-padding>
+			<md-card ng-show="assignmentGroupList.length > 0" style="border-radius: 20px">        
+ 				<md-content layout-padding style="border-radius:20px 20px 0 0">
 					<div layout="row">
 						<div layout="column" flex>
-							<h2>Welcome to {{thisKlass.name}}.</h2>
+							<h2>					<span class="md-avatar"><ng-letter-avatar  height="50" width="50"  data="{{thisKlass.name}}" shape="round"></ng-letter-avatar></span>
+Welcome to {{thisKlass.name}} - {{thisKlass.klassNum}}</h2>
             	<span class="md-subhead"> {{ thisKlass.shortDesc }}</span>
 						</div>
 						<div layout="row" flex="nogrow">	
-						<md-button  ng-click="classView(thisKlass._id+'/about')" class="md-icon-button" aria-label="delete">
+						<md-button  ng-hide="!user || user.username != thisUsername" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" class="md-icon-button" aria-label="edit">
 							<md-icon class="material-icons">edit</md-icon></md-button>
 						</div>
 					</div>
@@ -238,23 +293,55 @@
 						
 				<div ng-repeat="assignmentGroup in assignmentGroupList track by $index">
 					
-						<div class="md-card">
-							<div class="row text-center">
+						<!--div class="md-card">
+							<div class="row">
 								<a ng-href="/class/{{thisKlass._id}}/ag/{{assignmentGroup.assignmentGroupId._id}}"><img ng-src="./../img/icons/{{assignmentGroup.assignmentGroupId.icon}}" style="margin: 20px"></img></a>
-							</div>
-							<div class="row text-center">
-								{{assignmentGroup.assignmentGroupId.name}}                 <md-button  ng-click="showDeleteConfirm()" class="md-icon-button" aria-label="delete">
+								{{assignmentGroup.assignmentGroupId.name}} 
+					</div>
+							<div class="row text-right">
+							                <md-button  ng-click="showDeleteConfirm($event, $index, assignmentGroup.assignmentGroupId._id)" class="md-icon-button" aria-label="delete">
 						<md-icon class="material-icons">close</md-icon>
         </md-button>
           </md-button>
 						</div>
-						</div>
+						</div-->
+					
+					
+			<div class="md-card" >
+        <md-card-title>
+          <md-card-title-text>
+						<span class="md-headline">
+							<!--a ng-href="/class/{{thisKlass._id}}/ag/{{assignmentGroup._id}}"-->
+							<a ng-href="/educate/{{thisUsername}}/{{thisKlass.klassNum}}/{{assignmentGroup.assignmentGroupNum}}">
+								{{assignmentGroup.name}} - {{assignmentGroup.assignmentGroupNum}}
+							</a> </span>
+            <span class="md-subhead" style="font-weight:bold;">3 lessons</span><span class="md-subhead">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+						</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-lg card-media">								
+							<!--a ng-href="/class/{{thisKlass._id}}/ag/{{assignmentGroup._id}}"-->
+						<a ng-href="/educate/{{thisUsername}}/{{thisKlass.klassNum}}/{{assignmentGroup.assignmentGroupNum}}">
+	<img ng-src="./../img/icons/{{assignmentGroup.icon}}" style="margin: 20px"></img></a>
+</div>
+          </md-card-title-media>
+        </md-card-title>
+						
+        <md-card-actions layout="row" layout-align="end center">
+					<a ng-href="/educate/{{thisUsername}}/{{thisKlass.klassNum}}/{{assignmentGroup.assignmentGroupNum}}"><md-button>View</md-button></a>
+				  <md-button  ng-show="user.userType=='teacher' && user._id == thisKlass.teacherId" ng-click="showDeleteConfirm($event, $index, assignmentGroup._id)"  aria-label="delete">Delete</md-button>        
+					</md-card-actions>
+      </div>
+					        <md-divider ng-if="!$last"></md-divider>
+
+					
+					
 				</div> <!--/ng repeat assignments-->							
 
 
 					</span>
-						<md-button  ng-click="classView(thisKlass._id+'/about')" class="md-icon-button" aria-label="delete">
-							<md-icon class="material-icons">edit</md-icon></md-button>
+
 			</md-card-content>
 			</md-card>
 
@@ -268,7 +355,7 @@
 <div id="floater">
 
 			<!-----------------------FAB--------------------------->
-			<md-fab-speed-dial  md-direction="up" class="md-scale md-fab-bottom-right" >
+			<md-fab-speed-dial  md-direction="up" class="md-scale md-fab-bottom-right" ng-hide="!user || user.username != thisUsername" >
 				<md-fab-trigger>
 					<md-button aria-label="menu" class="md-fab md-warn">
           <i class="material-icons wi">menu</i>				
@@ -281,7 +368,7 @@
           <!--div class="valign-center"><i class="material-icons">add</i></div-->
 						<i class="material-icons wi">add</i>
 					</md-button>
-					<md-button aria-label="Facebook" class="md-fab md-raised " ng-click="classView(thisKlass._id+'/about')">
+					<md-button aria-label="Facebook" class="md-fab md-raised " ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')">
 							 <md-tooltip md-direction="left" md-visible="tooltipVisible">edit</md-tooltip>
           		<i class="material-icons wi">edit</i>				
 					</md-button>
@@ -334,6 +421,8 @@
               <md-option value="wrench.png"><img src="./../img/icons/wrench.png" style="width:30px" /></md-option>
               <md-option value="newspaper.png"><img src="./../img/icons/newspaper.png" style="width:30px" /></md-option>
               <md-option value="flask.png"><img src="./../img/icons/flask.png" style="width:30px" /></md-option>
+              <md-option value="light-bulb.png"><img src="./../img/icons/light-bulb.png" style="width:30px" /></md-option>
+              <md-option value="chat.png"><img src="./../img/icons/chat.png" style="width:30px" /></md-option>
             </md-select>
           </md-input-container>
 

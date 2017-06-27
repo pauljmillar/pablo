@@ -19,7 +19,9 @@ var assignmentSchema = mongoose.Schema({
             author: {type: Schema.Types.ObjectId, ref: 'User'},
             content: String 
           }
-        ]
+        ],
+        icon        : String,
+        assignmentNum : { type: Number, default: 0}
 });
 
 

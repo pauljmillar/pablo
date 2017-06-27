@@ -18,6 +18,9 @@ angular.module('services', [])
 			getKlass : function(id) {
 			  return $http.get('/api/klass/' + id); ///' + teacher_id);
 			},
+			getKlass2 : function(username, klassnum) {
+			  return $http.get('/api/klass/username/' + username + '/klassnum/' + klassnum); ///' + teacher_id);
+			},
 			createKlass : function(klassData) {
 				return $http.post('/api/klass', klassData).success(function (results){
 					return results;
@@ -46,11 +49,17 @@ angular.module('services', [])
 			getAssignmentGroups : function(id) {
 			  return $http.get('/api/klass/' + id + '/assignmentgroup'); //klass_id
 			},
+			getAssignmentGroups2 : function(username, klassnum) {
+			  return $http.get('/api/username/' + username + '/klassnum/' + klassnum + '/assignmentgroups'); //klass_id
+			},
 			deleteKlassAssignmentGroup : function(kid, agid) {
 			  return $http.delete('/api/klass/' + kid + '/assignmentgroup/' + agid); //klass_id
 			},
 			getAssignmentGroup : function(id) {
 			  return $http.get('/api/assignmentgroup/' + id); //ag_id
+			},
+			getAssignmentGroup2 : function(username, klassnum, agnum) {
+			  return $http.get('/api/username/' + username + '/klassnum/' + klassnum + '/agnum/' + agnum); //klass_id
 			},
 			createAssignmentGroup : function(assignmentGroupData) {
 				return $http.post('/api/assignmentgroup', assignmentGroupData).then(function (results){
@@ -62,6 +71,9 @@ angular.module('services', [])
 			},
 			getAssignment : function(id) {
 			  return $http.get('/api/assignment/' + id); //assignment_id
+			},
+			getAssignment2 : function(agid, asnum) {
+			  return $http.get('/api/assignment/assignmentgroup/' + agid + '/assignmentnum/' + asnum); //assignment_id
 			},
 			getAllStudentAssignments : function() {
 			  return $http.get('/api/studentassignments/all'); //all for a student

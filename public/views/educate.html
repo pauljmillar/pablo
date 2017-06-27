@@ -1,0 +1,316 @@
+<div layout="column"  flex>
+
+  <!--section layout="row" flex=""-->
+	
+
+ 
+
+		<!-- ANGULAR MATERIAL SIDENAV LEFT -->
+  <md-sidenav md-component-id="left" class="md-sidenav-left" >
+      <md-toolbar >
+        <h1 class="md-toolbar-tools"></h1>
+      </md-toolbar>
+     <md-content>
+      <md-list flex>
+        <!--home to dashboard if logged in, else to / -->
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
+					<i class="material-icons md-avatar" >assignment</i>
+          <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
+        </md-list-item>
+				        <md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
+
+				<div ng-repeat="klass in klassList track by $index">
+        	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
+				 </md-list-item>
+
+				</div>
+
+			<md-subheader ng-show="!user" class="md-no-sticky">Standard Curriculum</md-subheader>
+				<div ng-show="!user">
+	
+					       <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>
+					
+					
+				</div>				
+			 </md-list>
+		</md-content>
+  </md-sidenav>
+<!--/sidenav-->
+
+
+
+<!-- ANGULAR MATERIAL toolbar -->
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
+      <div class="md-toolbar-tools">
+        <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
+          <i class="material-icons">menu</i>
+        </md-button>
+        <h1>
+          <span class="hideOnMobile">pablo</span>
+        </h1>
+				
+
+			  <span flex></span>
+		
+				<md-button ng-show="!user"  class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
+
+			<md-menu md-position-mode="target-right bottom" md-offset="0 10" ng-show="user">
+	        <md-button  ng-click="openMenu($mdOpenMenu, $event)">
+          <div class="valign-center hideOnMobile">
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
+					</div>
+          <div class="valign-center onlyOnMobile">
+					<i class="material-icons">person</i>
+					</div>				
+        </md-button>
+
+      <md-menu-content width="3">
+        <md-menu-item>
+          <md-button ng-click="goProfile()">          
+						<md-icon class="material-icons">person</md-icon>Profile
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button href="/logout" target="_self">
+						<md-icon class="material-icons">exit_to_app</md-icon>Logout
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>		
+      </div>
+
+			<!-- /ANGULAR MATERIAL TOOLBAR -->
+
+
+</md-toolbar>	
+
+	    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;">
+
+
+<div class="container" >
+	<div class="row">
+		<div class="col-md-3">
+			
+<!--show class name here in a card if on mobile -->			
+			<md-card class="onlyOnMobile">
+			<div class="panel">
+				<div class="panel-heading">
+					<h3 class="" style="text-align:center">{{thisKlass.name}}</h3>
+				</div>
+			</div><!--/panel--->
+			</md-card>
+			
+			<md-card style="border-radius:20px">
+      <md-list flex>
+       <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>
+				</md-list>
+				
+			</md-card>
+				</div> <!--/end 3 col width-->
+	
+<style>
+	img:hover {
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+	</style>
+	
+		<div class="col-md-8">
+			<!--default block-->
+			<md-card style="border-radius: 20px">        
+ 				<md-content layout-padding style="border-radius:20px 20px 0 0">
+					<div layout="row">
+						<div layout="column" flex>
+							<h2>					<span class="md-avatar"><ng-letter-avatar  height="50" width="50"  data="P" shape="round"></ng-letter-avatar></span>
+Our TechEd Philosophy</h2>
+            	<span class="md-subhead"> Sculpting well-rounded, curious, responsible tech minds</span>
+						</div>
+						<div layout="row" flex="nogrow">	
+					<img src="./img/robot.png">
+
+						</div>
+					</div>
+				</md-content>
+				<md-card-content>
+
+					<span flex>
+						
+					
+					
+			<div class="md-card" >
+        <md-card-title>
+          <md-card-title-text>
+						<span class="md-headline"><a ng-href="">Consumers and Producers</a> </span>
+            <span class="md-subhead" style="font-weight:bold;">Teaching students to be both</span>
+						<br/>
+						<span class="md-subhead">Our goals for our TechEd curriculum vary with the child's age, but our philosophy is consistent across ages: teaching children how to be responsible, informed consumers of technology, while developing their understanding and skills necessary to produce new technology. </span>
+						<br/>
+						<span class="md-subhead">For our youngest children, consuming means being comfortable with a keyboard, mouse, tablet, touchpad.</span>
+						<br/>
+						<span class="md-subhead">For children 8-10, consuming means understanding internet safety and privacy and a responsible introduction to social media. They'll produce programs, presentations, and websites.</span>
+						<br/>
+						<span class="md-subhead">For middle schoolers, consuming includes responsible internet research and safely using social media. They'll produce websites, robots, and podcasts.</span>
+          </md-card-title-text>
+          <md-card-title-media>
+
+          </md-card-title-media>
+        </md-card-title>
+						
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="changeView('educate/curriculum/4')" style>Browse 3rd Grade</md-button>
+					</md-card-actions>
+      </div>
+	
+					        <md-divider ></md-divider>
+					
+			<div class="md-card" >
+        <md-card-title>
+          <md-card-title-text>
+						<span class="md-headline"><a ng-href="">Leading Technology Platforms</a> </span>
+            <span class="md-subhead" style="font-weight:bold;">Mastery of leading platforms</span>
+						<br/>
+						<span class="md-subhead">					
+									<div layout="row">
+										<div layout="column">
+											<img src="./img/laptop_small.png" style="margin-right: 20px; ">
+										</div>
+									<div >
+
+							Our curriculum blends leading, established platforms and strategies that have been proven and tested by millions of students.  This includes computer science and thinking exercises from <a href="https://code.org">Code.org</a>, block programming from <a href="https://scratch.mit.edu">Scratch</a>; document and presentation creation and colaboration using <a href="https://docs.google.com">Google Docs</a>; an introduction to databases by <a href="https://www.codecademy.com/courses/learn-sql/lessons/manipulation/exercises/sql?action=lesson_resume">Codecademy</a>; website creation by <a href="https://thimble.mozilla.org">Mozilla</a>; how the internet works with lessons on <a href="https://www.khanacademy.org/computing/computer-science/internet-intro/internet-works-intro/v/the-internet-wires-cables-and-wifi">Khan Academy</a>; software to hardware cooperation with lessons from <a href="https://world.kano.me/projects">Kano</a>; and many many others.
+										</div></div></span>
+							</md-card-title-text>
+          <md-card-title-media>
+          </md-card-title-media>
+        </md-card-title>
+						
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="changeView('educate/curriculum/6')">Browse 5th Grade</md-button>
+					</md-card-actions>
+      </div>
+				
+									        <md-divider ></md-divider>
+
+	
+							<div class="md-card" >
+        <md-card-title>
+          <md-card-title-text>
+						<span class="md-headline"><a ng-href="">Figuring Out, Not Memorizing</a> </span>
+            <span class="md-subhead" style="font-weight:bold;">Learning by doing</span>
+						<br/>
+						<span class="md-subhead">Our lessons expose children to A LOT.  The goal is to prepare them to be responsible users of technology, and curious creators with technology - not to learn new vocabulary.  We encourage the children to learn by doing, by trying, and by thinking, rather than by reading a lesson.  Of course, there are concepts to introduce, but for the most part, our lessons guide students through "doing" something. 
+						</span>
+          </md-card-title-text>
+          <md-card-title-media>
+
+          </md-card-title-media>
+        </md-card-title>
+						
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button ng-click="changeView('educate/curriculum/7')">Browse 6th Grade</md-button>
+					</md-card-actions>
+      </div>
+					
+					
+
+
+					</span>
+
+			</md-card-content>
+			</md-card>
+
+		
+
+<style>
+			
+.label-as-badge {
+    border-radius: 1em;
+}
+}</style>
+			
+
+
+
+
+		</div> <!--/grid of 8-->
+
+
+<div class="col-md-1">
+	<!--div style="min-height: 90vh;"></div-->
+<div id="floater">
+
+
+	</div><!--floater?-->
+		</div><!--/col of 2-->
+
+	</div><!-- /.row -->
+
+</div><!-- /.container -->
+
+
+
+
+				
+	</md-content>
+  </div>

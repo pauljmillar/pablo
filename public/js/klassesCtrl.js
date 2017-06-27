@@ -18,9 +18,9 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
 			services.getUserId()
 				.success(function(data) {
 					$scope.user = data;
-					$scope.userId = data.id;
-					$scope.email = data.local.email;
-					$scope.fname = data.firstName;
+					//$scope.userId = data.id;
+					//$scope.email = data.local.email;
+					//$scope.fname = data.firstName;
 				  			//usr = {id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com'};
 
 				});
@@ -30,15 +30,22 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
 			$scope.klassList = data2;
 	});
 	 
+	
 	$scope.changeView = function(view){
     $location.path('/'+view); // path not hash
   };
 
-	$scope.classView = function(id){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
-		else 
-    	$location.path('/class/' + id);
+	$scope.goHomePage = function(){
+		window.location = "/"
+  };
+	
+	
+	$scope.classView = function(username, klassNum){
+		//if ($scope.user.userType == "student")
+    //	$location.path('/studentclass/' + id);
+		//else 
+    	//$location.path('/class/' + id);
+    	$location.path('/educate/' + username + '/' + klassNum);
   };
 	
 	$scope.goAssignments = function() {
@@ -127,7 +134,9 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
 							shortDesc: null,
 							longDesc: null,
 							teacherId: null,
-							numStudents:0
+							numStudents:0,
+							klassNum:0,
+							username:null
 						};
 	
 	$scope.klass = angular.copy($scope.masterKlass);
@@ -183,7 +192,7 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
       targetEvent: ev,
       clickOutsideToClose:true,
       fullscreen: $scope.customFullscreen, // Only for -xs, -sm breakpoints.
-      locals: {k: $scope.klass, klist: $scope.klassList}
+      locals: {k: $scope.klass, klist: $scope.klassList, uname: $scope.user.username}
     })
     .then(function(answer) {
    		//$scope.status = 'You said the information was "' + answer + '".';
@@ -194,10 +203,12 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
     });
   };
 
-	  function DialogController($scope, $mdDialog, $log, k, klist) {
+	  function DialogController($scope, $mdDialog, $log, k, klist, uname) {
 
     	$scope.klass=k;
 			$scope.klassList=klist;
+			$scope.klass.username = uname;
+			
     
     	$scope.hide = function() {
       	$mdDialog.hide();
@@ -211,10 +222,11 @@ angular.module('klassesCtrl', ['ui.bootstrap'])
 
 				services.createKlass($scope.klass)
 											.then(function(data) {
-											console.log('createKlass data:'+JSON.stringify(data)+' id:'+data.data._id);
+											//alert('createKlass data:'+JSON.stringify(data)+' klassnum:'+data.data.klassNum);
 											$log.log('createKlass data:'+JSON.stringify(data)+' id:'+data.data._id)
 												//set id of klass just created
 												$scope.klass._id = data.data._id;
+												$scope.klass.klassNum = data.data.klassNum;
 
 												// add new klass to view
 												$scope.klassList.unshift($scope.klass);

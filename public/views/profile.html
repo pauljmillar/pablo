@@ -10,25 +10,35 @@
       </md-toolbar>
      <md-content>
       <md-list flex>
-        <!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
-        <md-list-item class="md-2-line" ng-click="goHome()" >
+        <!--home to dashboard if logged in, else to / -->
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
 					<i class="material-icons md-avatar" >home</i>
           <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
         </md-list-item>
-			<md-divider ></md-divider>
-        <md-list-item class="md-2-line" ng-click="goAssignments()">
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
 					<i class="material-icons md-avatar" >assignment</i>
           <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
         </md-list-item>
-				        <md-subheader class="md-no-sticky">Classes</md-subheader>
+				        <md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+        	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
-        	</md-list-item>
-				</div>
+				 </md-list-item>
 
+				</div>					
+					
+				</div>				
 			 </md-list>
 		</md-content>
   </md-sidenav>
@@ -37,7 +47,7 @@
 
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;" >
+    <md-toolbar class="" style="position: fixed; " >
       <div class="md-toolbar-tools">
 				
 				
@@ -51,13 +61,13 @@
 
 			<span flex></span>
 		
-     	<md-button ng-show="user._id == '58cab7d8796c46353244cf54'" class="md-raised" aria-label="Sign up" href="/signup" target="_self">Sign Up</md-button>
+     	<md-button ng-show="!user" class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
 
 
 			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button class="md-hue-2"  ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -89,55 +99,74 @@
 
 </md-toolbar>	
 
-	    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;">
+	    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;" >
 
+    <form name="signupform">
 
 <div class="container" >
 	<div class="row">
 		<div class="col-md-3">
 			
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
+			<md-card style="border-radius: 20px">
+			<div class="panel" style="border-radius: 20px">
+				<div class="panel-heading" style="border-radius: 20px">
 					  <div layout="row" flex layout-align="center center">
-							<ng-letter-avatar  height="120" width="120"  data="{{email}}" shape="round"></ng-letter-avatar>
+							<img ng-src="./../img/icons/{{user.avatar}}" src="./../img/icons/teacher_avatar1.png" style="width:100px" />
+							<!--ng-letter-avatar  height="120" width="120"  data="{{email}}" shape="round"></ng-letter-avatar-->
 					</div>
+
+												<md-input-container class="md-block" flex-gt-sm ng-show="!isReadOnly">
+            <md-select ng-model="user.avatar" ng-required="true" placeholder="teacher_avatar1.png"> 
+             <md-option value="teacher_avatar1.png"><img src="./../img/icons/teacher_avatar1.png" style="width:30px" /></md-option>
+             <md-option value="teacher_avatar2.png"><img src="./../img/icons/teacher_avatar2.png" style="width:30px" /></md-option>
+              <md-option value="teacher_avatar3.png"><img src="./../img/icons/teacher_avatar3.png" style="width:30px" /></md-option>
+              <md-option value="teacher_avatar4.png"><img src="./../img/icons/teacher_avatar4.png" style="width:30px" /></md-option>
+            </md-select>
+          </md-input-container>
 					<hr>
 					
  					  <div layout="row" flex layout-align="center center">
-     <md-button class="md-raised" disabled="disabled">avatar</md-button>
+     <md-button class="md-raised" disabled="disabled">{{user.username}}</md-button>
+							          
+
 					</div>
 					
 				</div>
 			</div><!--/panel--->
 			</md-card>
 	
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
-					<h4 class=""></h4>
-					<br/>
-				</div>
-			</div><!--/panel--->
-			</md-card>
+
 
 				
 				</div> <!--/end 3 col width-->
 
 		<div class="col-md-8">
 			<!--default block-->
-    <form name="signupform">
 			
-			<md-card >        
+			<md-card style="border-radius: 20px">        
           <md-card-title>
         		<md-card-title-text>
             <span class="md-headline">About You</span>
-            <span class="md-subhead"> You are a:</span><h4 ng-show="isReadOnly">{{user.userType}}</h4>
 						</md-card-title-text>
 					</md-card-title>
 					<md-card-content>
 				
-		 <md-radio-group ng-model="user.userType" required name="userType" ng-show="!isReadOnly">
+	 						<div layout="row">
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>
+						<md-input-container class="md-block" flex-gt-sm>
+
+<button class="btn btn-primary" ng-click="toggleUserType('teacher')" ng-disabled="isReadOnly" ng-if="user.userType =='student'">Account Type: Student &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+<button class="btn btn-danger" ng-click="toggleUserType('student')" ng-disabled="isReadOnly" ng-if="user.userType =='teacher'">Account Type: Teacher &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+					</md-input-container>
+								<!--md-input-container><span class="md-subhead">You are a:<h4 ng-show="isReadOnly">{{user.userType}}</h4></span></md-input-container-->
+							</div>	
+								
+								<!--div layout="row">
+							  <div flex="20" hide-xs>
+        				</div>
+								<md-radio-group ng-model="user.userType"  name="userType" ng-show="!isReadOnly">
 								<div layout-gt-sm="row">
 
 									<md-radio-button name="userType" value="student" class="md-primary">Student</md-radio-button><span flex=5></span>
@@ -146,38 +175,105 @@
 
 			 </div>
     </md-radio-group>
+						</div-->
+								
+		 						<div layout="row">
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>				
+          <md-input-container class="md-block" style="max-width: 200px" flex-gt-sm>
+             <label>Username</label>
+           <input   nameunique={{originalUsername}} required ng-readonly="isReadOnly" ng-pattern="/^[a-z0-9_]{1,25}$/" ng-minlength="3" ng-maxlength="15" ng-model="user.username" name="username" ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0}, allowInvalid: true}" style="font-weight:bold">
+					  <div ng-messages="signupform.username.$error" ng-show="signupform.username.$dirty" >
+            	<div ng-message-exp="['required',  'pattern']">
+              	lowercase letters, numbers, or underscores only
+            	</div>
+            	<div ng-message-exp="[ 'minlength', 'maxlength']">
+              	3-15 characters
+            	</div>
+            	<div ng-message="nameunique">
+              	name taken
+            	</div>						
+						</div>
+  							</md-input-container>
+									
+						</div>							
 						
-	        <md-input-container class="md-block" ng-show="user.google.name">
-          <label>Google Name</label>
-          <input ng-model="user.google.name">
-        </md-input-container>
-
- 						<div layout-gt-sm="row">
+ 						<div layout-gt-sm="row">	 
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>
           <md-input-container class="md-block" flex-gt-sm>
             <label>First name</label>
-            <input required ng-readonly="isReadOnly" ng-model="user.firstName" name="firstName">
+            <input  ng-readonly="isReadOnly" ng-model="user.firstName" name="firstName">
           </md-input-container>
 
           <md-input-container class="md-block" flex-gt-sm>
             <label>Last Name (optional)</label>
             <input ng-readonly="isReadOnly" ng-model="user.lastName" name="lastName">
           </md-input-container>
+														  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>
         </div>
 						
+							<div layout="row">
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>	
 						<md-input-container md-no-float class="md-block">
             <label>Confirm Email</label>
           <input required   ng-readonly="isReadOnly" ng-model="user.local.email" name="email" >
         </md-input-container>
+						</div>
+			
+						<!--div layout="row">
+							  <div flex="20" hide-xs-->
+          <!-- Spacer //-->
+        				<!--/div>	
+							<md-input-container class="md-block" flex-gt-sm>
+								<span class="md-subhead"> Is Private?<h4 ng-show="isReadOnly">{{user.isPrivate ? 'Yes' : 'No'}}</h4></span>
+							</md-input-container>
+						</div-->
 						
+						<div layout="row">
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>
+															
+		 					<!--md-radio-group ng-model="user.isPrivate"  name="isPrivate" ng-show="!isReadOnly" name="isPrivate">
+								<div layout-gt-sm="row">
+									<md-radio-button name="isPrivate" ng-value=true class="md-primary">Yes</md-radio-button><span flex=5></span>
+      						<md-radio-button  name="isPrivate" ng-value=false>No </md-radio-button><span flex=5></span>
+			 					</div>
+    					</md-radio-group-->
+					<md-input-container class="md-block" flex-gt-sm>
 
+<button class="btn btn-primary" ng-click="togglePrivate(true)" ng-disabled="isReadOnly" ng-if="!user.isPrivate">Lessons are Public &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+<button class="btn btn-danger" ng-click="togglePrivate(false)" ng-disabled="isReadOnly" ng-if="user.isPrivate">Lessons are Private &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+					</md-input-container>
+
+						</div>	
+						
+						<div layout="row">
+							  <div flex="20" hide-xs>
+          <!-- Spacer //-->
+        				</div>
+			<md-input-container class="md-block" flex-gt-sm>					
+<button class="btn btn-primary " ng-click="togglePremium(true)" ng-disabled="isReadOnly" ng-if="!user.isPremium">Plan: Free &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+<button class="btn btn-danger " ng-click="togglePremium(false)" ng-disabled="isReadOnly" ng-if="user.isPremium">Plan: Premium &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+							</md-input-container>
+							<br/><br/>
+						</div>		
+						
 
 
 
 						
 						<span flex></span>
 					<md-button ng-click="setEditMode()"  ng-show="isReadOnly" class="md-raised md-primary">Edit</md-button>
-	<md-button ng-click="updateProfile()" ng-show="!isReadOnly" ng-disabled="signupform.$invalid || isReadOnly" class="md-raised md-accent">Save</md-button>
-		<md-button ng-click="cancelEditMode()" ng-show="!isReadOnly" ng-disabled="signupform.$invalid || isReadOnly" class="md-raised">Cancel</md-button>
+	<md-button ng-click="updateProfile()" ng-show="!isReadOnly" ng-disabled="signupform.email.$invalid || (signupform.username.$invalid && signupform.username.$touched) || (signupform.password.$invalid && !isLoggedIn)" class="md-raised md-accent">Save</md-button>
+		<md-button ng-click="cancelEditMode()" ng-show="!isReadOnly" ng-disabled="isReadOnly" class="md-raised">Cancel</md-button>
 				</md-card-content>
 			</md-card>
 

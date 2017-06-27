@@ -1,3 +1,4 @@
+
 var Klass = require('./models/klass');
 var Assignment = require('./models/assignment');
 var User = require('./models/user');
@@ -7,7 +8,7 @@ var KlassAssignmentGroup = require('./models/klassassignmentgroup');
 var AssignmentGroup = require('./models/assignmentgroup');
 //var AssignmentGroupAssignment = require('./models/assignmentgroupassignment');
 var  nodemailer = require('nodemailer');
-
+var ObjectId = require('mongodb').ObjectId;
 var shortid = require('shortid');
 
 module.exports = function(app, passport) {
@@ -44,15 +45,15 @@ module.exports = function(app, passport) {
 	app.get('/api/userid', function(req, res) {
 		//console.log(req.user.id);
 		var usr;// = req.user.id;
-		if (!req.user) 
-			req.user = {id:'58fe458964b64e791bbecd90', _id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com', local: {email:'demo@demo.com'}, default: 'default'};
+		//if (!req.user) 
+		//	req.user = {id:'58fe458964b64e791bbecd90', _id:'58fe458964b64e791bbecd90', fname:'Welcome', username:'demo1', email:'demo@demo.com', local: {email:'demo@demo.com'}, default: 'default'};
 			//user = {id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com'};
 			  //passport.serializeUser(function(user, done) {
         //	done(null, user.id);
     		//});
 			
 
-		console.log('userid:'+req.user.id);
+		//console.log('userid:'+req.user.id);
 
 		res.send(req.user);
 	});
@@ -63,39 +64,54 @@ module.exports = function(app, passport) {
 			_id: -1
 		}).exec(function(err, users) {
 
-			if (err)
-				res.send(err);
+			if (err) {return res.send(err);}
+
 
 			console.log(JSON.stringify(users));
 			res.json(users);
 		});
 	});
 
+	// lightweight, called by profile form while typing----------------------------------------=
+	app.get('/api/user/username/:username', function(req, res) {
+			User.findOne({ 'username':req.params.username }, { 'username': 1}).exec(function(err,docs){
+					if (err) {return res.send(err);}
+
+    			res.json(docs);
+	   		});
+	});	
+	
 	// update userinfo
 	app.put('/api/user/:user_id', function(req, res) {
 
 		// use our klass model to find the bear we want
 		User.findById(req.params.user_id, function(err, user) {
 
-			if (err)
-				res.send(err);
+			if (err) {return res.send(err);}
+
 
 			user.firstName = req.body.firstName;
 			user.lastName = req.body.lastName;
 			user.userType = req.body.userType;
 			user.local.email = req.body.email;
+			user.username = req.body.username;
+			user.avatar = req.body.avatar;
+			user.isPrivate = req.body.isPrivate;
+			user.isPremium = req.body.isPremium;
+			
+			console.log(JSON.stringify(user));
 
 
 			user.save(function(err) {
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json({
 					message: 'User updated!'
 				});
 			});
 
-		});
+		}); 
 	});
 
 
@@ -105,8 +121,8 @@ module.exports = function(app, passport) {
 			_id: -1
 		}).exec(function(err, assn) {
 
-			if (err)
-				res.send(err);
+			if (err) {return res.send(err);}
+
 
 			console.log(JSON.stringify(assn));
 			res.json(assn);
@@ -124,8 +140,8 @@ module.exports = function(app, passport) {
 			.populate('studentId')
 			.exec(function(err, klasses) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json(klasses);
 			});
@@ -143,8 +159,8 @@ module.exports = function(app, passport) {
 			})
 			.exec(function(err, studentassignments) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				console.log(JSON.stringify(studentassignments));
 				res.json(studentassignments);
@@ -159,8 +175,8 @@ module.exports = function(app, passport) {
   				})
 					.exec(function(err, assignment){
 
-            if (err)
-                res.send(err);
+						if (err) {return res.send(err);}
+
 					
 				 				console.log('studentAssignment record************');
 								console.log(assignment);
@@ -186,8 +202,8 @@ module.exports = function(app, passport) {
 			})
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+			if (err) {return res.send(err);}
+
 
 				res.json(assignments);
 			});
@@ -214,8 +230,8 @@ module.exports = function(app, passport) {
 			.populate('klassId')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+			if (err) {return res.send(err);}
+
 
 				res.json(assignments);
 			});
@@ -238,8 +254,8 @@ module.exports = function(app, passport) {
 			.populate('studentId')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+			if (err) {return res.send(err);}
+
 
 				res.json(assignments);
 			});
@@ -267,8 +283,8 @@ module.exports = function(app, passport) {
 			.populate('klassId')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+			if (err) {return res.send(err);}
+
 
 				res.json(assignments);
 			});
@@ -289,8 +305,8 @@ module.exports = function(app, passport) {
 		var setObj = { $set: objForUpdate }
 		
 		StudentAssignment.findOneAndUpdate({ _id: req.params._id}, setObj, function(err, doc) {
-			if (err)
-				res.send(err);
+			if (err) {return res.send(err);}
+
 
 			//update points
 			if (req.body.pointsOn) {
@@ -314,8 +330,8 @@ module.exports = function(app, passport) {
 			StudentAssignment.find({
 				assignmentId: doc.assignmentId
 			}, function(err, sas) {
-				if (err)
-					res.send(err);
+					if (err) {return res.send(err);}
+
 
 				var totalCount = 0;
 				var completedCount = 0;
@@ -335,8 +351,8 @@ module.exports = function(app, passport) {
 						numNotComplete: (totalCount - completedCount)
 					}
 				}, function(err, doc2) {
-					if (err)
-						res.send(err);
+						if (err) {return res.send(err);}
+
 				});
 			});
 
@@ -369,8 +385,8 @@ module.exports = function(app, passport) {
 			.populate('klassId')
 			.exec(function(err, klasses) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json(klasses);
 			});
@@ -393,8 +409,8 @@ module.exports = function(app, passport) {
 			.populate('klassId')
 			.exec(function(err, sks) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 				console.log('studentklass record************');
 				console.log(sks);
 				res.json(sks);
@@ -413,11 +429,11 @@ module.exports = function(app, passport) {
 			.sort({
 				_id: -1
 			})
-			.populate('studentId')
+			.populate('studentId')  
 			.exec(function(err, students) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json(students);
 			});
@@ -439,8 +455,8 @@ module.exports = function(app, passport) {
 			})
 			.exec(function(err, klass) {
 
-				if (err)
-					res.send(err);
+					if (err) {return res.send(err);}
+
 			
 					if (!req.user) 
 						req.user = {id:'58fe458964b64e791bbecd90', _id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com', local: {email:'demo@demo.com'}};
@@ -467,8 +483,8 @@ module.exports = function(app, passport) {
 							})
 							.count(function(err, count) {
 
-								if (err)
-									res.send(err);
+								if (err) {return res.send(err);}
+
 
 								Klass.findOneAndUpdate({
 									_id: klass._id
@@ -478,8 +494,8 @@ module.exports = function(app, passport) {
 									}
 								}, function(err, doc) {
 
-									if (err)
-										res.send(err);
+									if (err) {return res.send(err);}
+
 
 									//return klass so that view can immediately display new klass in array
 									res.json(klass);
@@ -497,18 +513,19 @@ module.exports = function(app, passport) {
 		// use our klass model to find the bear we want
 		Klass.findById(req.params.klass_id, function(err, klass) {
 
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+
 
 			klass.name = req.body.name; // update the klass info
 			klass.shortDesc = req.body.shortDesc; // update the klass info
 			klass.longDesc = req.body.longDesc; // update the klass info
 			klass.pointsOn = req.body.pointsOn; // update the klass info
+			//klass.isPrivate = req.body.isPrivate; // update the klass info
 
 			// save the bear
 			klass.save(function(err) {
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json({
 					message: 'Klass updated!'
@@ -525,25 +542,27 @@ module.exports = function(app, passport) {
 
 
 	// get classes for userid
-	app.get('/api/klasses', function(req, res) {
+	app.get('/api/klasses', function(req, res) { 
 
 		//Klass.find()function(err, klasses) {	
 		//Klass.find().sort({_id: -1}).exec(function(err, klasses){
-		if (!req.user) 
-			req.user = {id:'58fe458964b64e791bbecd90', _id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com', local: {email:'demo@demo.com'}};
+		//if (!req.user) 
+		//	req.user = {id:'58fe458964b64e791bbecd90', _id:'58fe458964b64e791bbecd90', fname:'Welcome', email:'demo@demo.com', local: {email:'demo@demo.com'}};
 
-		Klass.find({
-			teacherId: req.user.id
-		}).sort({
-			_id: -1
-		}).exec(function(err, klasses) {
+	if (req.user){
+	Klass.find({ teacherId: new ObjectId(req.user.id) }) 
+			.sort({ klassNum: 1 })
+			.populate('teacherId')
+			.exec(function(err, klasses) {
 
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
 
-			console.log(JSON.stringify(klasses));
+
+			console.log('hola'+JSON.stringify(klasses));
 			res.json(klasses);
 		});
+	}
+		
 	});
 
 
@@ -556,21 +575,42 @@ module.exports = function(app, passport) {
 			.populate('teacherId')
 			.exec(function(err, klass) {
 				//Klass.findById(req.params.klass_id, function(err, klass) {
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json(klass);
 			});
 	});
 
+		// get one klass record
+	app.get('/api/klass/username/:username/klassnum/:klassnum', function(req, res) {
+
+		User.findOne({
+			username: req.params.username
+		})
+		.exec(function(err, usr) {		
+				if (err) {return res.send(err);}
+		
+		Klass.findOne({'klassNum':req.params.klassnum, 'teacherId': usr._id})
+			.populate('teacherId')
+			.exec(function(err, klass) {
+				//Klass.findById(req.params.klass_id, function(err, klass) {
+				if (err) {return res.send(err);}
+
+
+				res.json(klass);
+			}); 
+			}); 
+	});
+	
 	// delete one klass record
 	app.delete('/api/klass/:klass_id', function(req, res) {
 
 		Klass.remove({
 			_id: req.params.klass_id
 		}, function(err, klass) {
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+
 
 			res.json({
 				message: 'Successfully deleted'
@@ -588,22 +628,34 @@ module.exports = function(app, passport) {
 		klass.name = req.body.name;
 		klass.shortDesc = req.body.shortDesc;
 		klass.longDesc = req.body.longDesc;
+		klass.username = req.body.username;
 		klass.teacherId = req.user.id;
 		klass.joinCode = shortid.generate();
 
 		console.log('KLASS: ' + JSON.stringify(klass));
 
 
-		klass.save(function(err, klass) {
+		//find max classNum
+		Klass.find({'teacherId': klass.teacherId}).sort({'klassNum':-1}).limit(1)
+			.exec(function(err, kls) {
 
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+				
+				if (kls[0])
+					klass.klassNum = kls[0].klassNum + 1;
+			  else
+					klass.klassNum = 1; 
+			
+				klass.save(function(err, k) {
 
-			res.json({
-				message: 'klass created',
-				_id: klass._id
-			});
+				if (err) {return res.send(err);}
 
+		
+					console.log('NEW KLASS: ' + JSON.stringify(k));
+
+					res.json(k);
+
+				});
 		});
 	});
 
@@ -613,15 +665,15 @@ module.exports = function(app, passport) {
 		// use our klass model to find the bear we want
 		Klass.findById(req.params.klass_id, function(err, klass) {
 
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+
 
 			klass.name = req.body.name; // update the klass info
 
 			// save the bear
 			klass.save(function(err) {
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json({
 					message: 'Klass updated!'
@@ -639,15 +691,15 @@ module.exports = function(app, passport) {
 		// use our klass model to find the bear we want
 		Klass.findById(req.params.klass_id, function(err, klass) {
 
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+
 
 			klass.joinCode = joinCode; // update the klass info
 
 			// save the bear
 			klass.save(function(err) {
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				res.json({
 					joinCode: joinCode
@@ -678,8 +730,8 @@ module.exports = function(app, passport) {
 			.populate('klassId')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 				console.log('Assignments********************');
 				console.log(JSON.stringify(assignments));
 				res.json(assignments);
@@ -698,8 +750,8 @@ module.exports = function(app, passport) {
 			.populate('comments.author')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+				if (err) {return res.send(err);}
+
 
 				console.log(JSON.stringify(assignments));
 				res.json(assignments);
@@ -710,8 +762,8 @@ module.exports = function(app, passport) {
 	// get one assignment record
 	app.get('/api/assignment/:assignment_id', function(req, res) {
 		Assignment.findById(req.params.assignment_id, function(err, assignment) {
-			if (err)
-				res.send(err);
+				if (err) {return res.send(err);}
+
 
 			res.json(assignment);
 		});
@@ -746,15 +798,30 @@ module.exports = function(app, passport) {
 		assignment.teacherId = req.user.id;
 		assignment.assignmentGroupId = req.body.assignmentGroupId;
 		assignment.isAnnouncement = req.body.isAnnouncement;
+		assignment.icon = req.body.icon;
 
 		console.log(JSON.stringify(assignment));
 
+		//find max classNum
+		Assignment.find({'assignmentGroupId': assignment.assignmentGroupId}).sort({'assignmentNum':-1}).limit(1)
+			.exec(function(err, asn) {
 
-		assignment.save(function(err) {
+			  if (err) {res.send(err);}
+				
+				if (asn[0])
+					assignment.assignmentNum = asn[0].assignmentNum + 1;
+			  else
+					assignment.assignmentNum = 1; 
+			
+
+		assignment.save(function(err, asgn) {
 
 			if (err)
 				res.send(err);
-/***
+
+			res.json(asgn);
+			
+			/***
 			//create studentassignments for every student enrolled
 			var numNotComplete = 0;
 			var promise = StudentKlass.find({
@@ -804,7 +871,7 @@ module.exports = function(app, passport) {
 				});
 
 			}); ***/
-
+		});
 		});
 	});
 
@@ -892,7 +959,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	
 		// get assignments for a specified class
-	app.get('/api/klass/:klass_id/assignmentgroup', function(req, res) {
+/**	app.get('/api/klass/:klass_id/assignmentgroup', function(req, res) {
 		KlassAssignmentGroup.find({
 				klassId: req.params.klass_id
 			})
@@ -909,12 +976,78 @@ module.exports = function(app, passport) {
 				res.json(assignmentGroups);
 			});
 	});
+	**/
+	// get assignments for a specified class
+	app.get('/api/klass/:klass_id/assignmentgroup', function(req, res) {
+		AssignmentGroup.find({
+				klassId: req.params.klass_id
+			})
+			.sort({
+				_id: -1
+			})
+			.exec(function(err, assignmentGroups) {
+
+				if (err)
+					res.send(err);
+
+				console.log(JSON.stringify(assignmentGroups));
+				res.json(assignmentGroups);
+			});
+	});
+	
+	// NEW: get assignment groups for a user+class
+	app.get('/api/username/:username/klassnum/:klassnum/assignmentgroups', function(req, res) {
+		//look up klassId w username+klassnum
+		
+		Klass.findOne({
+			klassNum: req.params.klassnum,
+			username: req.params.username
+		})
+		.exec(function(err, kls) {		
+			 if (err) {res.send(err);}
+
+			console.log('called: '+req.params.username + req.params.klassnum + JSON.stringify(kls));
+
+			var klsid = '';
+			if (kls)
+				klsid = kls._id;
+			
+				AssignmentGroup.find({
+				klassId: klsid
+			})
+			.sort({
+				_id: -1
+			})
+			.exec(function(err, assignmentGroups) {
+
+				if (err) {res.send(err); return;}
+
+				//console.log(JSON.stringify(assignmentGroups));
+				res.json(assignmentGroups);
+		});
+		});
+	});
 	
 	// delete one klass assignment group association
-	app.delete('/api/klass/:klass_id/assignmentgroup/:as_id', function(req, res) {
+	/**app.delete('/api/klass/:klass_id/assignmentgroup/:as_id', function(req, res) {
 
 		KlassAssignmentGroup.remove({
 			klassId: req.params.klass_id, assignmentGroupId: req.params.as_id
+		}, function(err, klass) {
+			if (err)
+				res.send(err);
+
+			res.json({
+				message: 'Successfully deleted'
+			});
+		});
+	});**/
+	
+	app.delete('/api/klass/:klass_id/assignmentgroup/:as_id', function(req, res) {
+
+		AssignmentGroup.remove({
+			//klassId: req.params.klass_id, assignmentGroupId: req.params.as_id
+			_id: req.params.as_id
 		}, function(err, klass) {
 			if (err)
 				res.send(err);
@@ -928,14 +1061,58 @@ module.exports = function(app, passport) {
   // get assignmentgroup
 	app.get('/api/assignmentgroup/:ag_id', function(req, res) {
 		AssignmentGroup.findById(req.params.ag_id, function(err, assignment) {
-			if (err)
-				res.send(err);
+			if (err) {res.send(err); return;}
 
 			res.json(assignment);
 		});
 	});
 	
-	// create new assignment =========================
+  // NEW get assignment
+	app.get('/api/assignment/assignmentgroup/:agid/assignmentnum/:asnum', function(req, res) {
+		Assignment.findOne({'assignmentGroupId': req.params.agid, 'assignmentNum':req.params.asnum}, function(err, assignment) {
+			if (err) {res.send(err); return;}
+
+			res.json(assignment);
+		});
+	});
+	
+	// NEW: get One assignment group for a user+class + agnum
+	app.get('/api/username/:username/klassnum/:klassnum/agnum/:agnum', function(req, res) {
+		//look up klassId w username+klassnum
+		
+		Klass.findOne({
+			klassNum: req.params.klassnum,
+			username: req.params.username
+		})
+		.exec(function(err, kls) {		
+			 if (err) {res.send(err);}
+
+			console.log('called: '+req.params.username + req.params.klassnum + JSON.stringify(kls));
+
+			var klsid = '';
+			if (kls)
+				klsid = kls._id;
+			
+			console.log('***KLSID:'+klsid)
+			
+				AssignmentGroup.findOne({
+				klassId: klsid,
+				assignmentGroupNum: req.params.agnum
+			})
+			.sort({
+				_id: -1
+			})
+			.exec(function(err, assignmentGroup) {
+
+				if (err) {res.send(err); return;}
+
+				//console.log(JSON.stringify(assignmentGroups));
+				res.json(assignmentGroup);
+		});
+		});
+	});	
+	
+	// create new assignmentgroup =========================
 	app.post('/api/assignmentgroup', function(req, res) {
 	
 	if (!req.user) 
@@ -950,25 +1127,48 @@ module.exports = function(app, passport) {
 		assignmentGroup.isCustom = req.body.isCustom;
 		assignmentGroup.isPublic = req.body.isPublic;
 		assignmentGroup.createdById = req.user._id;
+		assignmentGroup.klassId = req.body.klassId;
 
-		console.log(JSON.stringify(assignmentGroup));
+		console.log('new AG: '+ JSON.stringify(assignmentGroup));
 
+		//find max classNum
+		AssignmentGroup.find({'klassId': assignmentGroup.klassId}).sort({'assignmentGroupNum':-1}).limit(1)
+			.exec(function(err, ag) {
 
-		assignmentGroup.save(function(err) {
+			  if (err) {res.send(err);}
+				 
+				console.log('found AG: '+ JSON.stringify(ag));
+
+				if (ag[0]) {
+					assignmentGroup.assignmentGroupNum = ag[0].assignmentGroupNum + 1;
+console.log('in if: '+ assignmentGroup.assignmentGroupNum);
+				} else {
+					assignmentGroup.assignmentGroupNum = 1; 
+console.log('in else: '+ assignmentGroup.assignmentGroupNum);
+				}
+			
+console.log('new ag num: '+ assignmentGroup.assignmentGroupNum);
+
+		assignmentGroup.save(function(err, ag1) {
 
 			if (err)
 				res.send(err);
 
-			
+			res.json(ag1);
+
 			//add klassAssignmentGroup record
-	  	var klassAssignmentGroup = new KlassAssignmentGroup();
-			klassAssignmentGroup.klassId = req.body.klassId;
-			klassAssignmentGroup.assignmentGroupId = assignmentGroup._id;
+	  //	var klassAssignmentGroup = new KlassAssignmentGroup();
+		//	klassAssignmentGroup.klassId = req.body.klassId;
+		//	klassAssignmentGroup.assignmentGroupId = assignmentGroup._id;
 
-			klassAssignmentGroup.save(function(err) {
-
-				if (err)
-					res.send(err);
+		//	klassAssignmentGroup.save(function(err, kag) {
+    //
+		//		if (err)
+		//			res.send(err);
+		//		
+		//		res.json(kag);
+    //
+		//	});
 			});
 		});
 	});
@@ -984,13 +1184,16 @@ module.exports = function(app, passport) {
 			//.populate('assignmentGroupId')
 			.exec(function(err, assignments) {
 
-				if (err)
-					res.send(err);
+				if (err) {res.send(err); return;}
 
 				console.log(JSON.stringify(assignments));
 				res.json(assignments);
 			});
 	});
+	
+	
+	
+	
 	
 	// =============================================================================
 	// AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -1007,7 +1210,7 @@ module.exports = function(app, passport) {
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-		successRedirect: '/dashboard', // redirect to the secure profile section
+		successRedirect: '/profile-signup', // redirect to the secure profile section
 		failureRedirect: '/login', // redirect back to the signup page if there is an error
 		failureFlash: true // allow flash messages
 	}));
@@ -1248,6 +1451,45 @@ transporter.sendMail(mailOptions, function(error, info){
       });
 
 	
+	app.get('/educate/:username/:class/:ag/:lesson/detail', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class+'/'+req.params.ag+'/'+req.params.lesson+'/detail'});
+	});
+	
+	app.get('/educate/:username/:class/:ag/:lesson', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class+'/'+req.params.ag+'/'+req.params.lesson});
+	});
+	
+	app.get('/educate/:username/:class/:ag', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class+'/'+req.params.ag});
+	});
+	
+	app.get('/educate/:username/:class', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class});
+	});
+	
+	app.get('/educate/:username/:class/about', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class});
+	});
+	
+	app.get('/educate/:username/:class/students', hasAccessToClass, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! /educate/'+req.params.username+'/'+req.params.class});
+	});
+	
+	app.get('/educate/:username', hasAccessToTeacherHome, function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+  	//res.status(200).send("Sucess: /educate/"+req.params.username);
+	});
+	
+	app.get('/educate', function(req, res) {
+	   res.sendfile('./public/views/shell.html'); //
+		//res.json({ msg: 'YES! Educate'});
+	});
 	
 
 	// GO TO ANGULAR ROUTE =========================
@@ -1269,4 +1511,133 @@ function isLoggedIn(req, res, next) {
 		return next();
 
 	res.redirect('/');
+}
+
+function hasAccessToClass(req, res, next) {
+	//(!isTeacherHomePagePrivate || isOwner || isStudentInClass)...user.homepageprivate Y/N...if usertype=student, query studentclass
+
+// isTeacherHomePagePrivate?
+		User.findOne({'username': req.params.username})
+			.exec(function(err, usr) {
+
+			  if (err) {res.send(err);}
+
+				//page doesn't exist
+				if (!usr) {
+  				res.status(404).send("Sorry, can't find that teacher!");
+					return;
+					}
+			
+				//not private, so display page
+				if (!usr.isPrivate) {
+					 return next();		
+				} else {
+					
+					// isOwner?
+   				if (req.isAuthenticated()) {
+      			
+      			//YES! user=owner
+						if (req.user.username == req.params.username){
+							return next();				
+						} else {
+							
+							//not owner, but logged in; is student in class?
+							StudentKlass.findOne({'klassId': req.params.class, 'studentId': req.user._id})
+								.exec(function(err, sk) {
+
+			  					if (err) {res.send(err);}
+
+									//YES, student in class
+									if (sk)
+  									return next();
+								
+									res.status(404).send("Sorry, you're not enrolled in this class!");
+									return;
+
+
+							});
+													
+						}
+						
+	 				} else {
+							res.status(404).send("Sorry, not allowed");
+							return;
+					}
+					
+				} //end else is private
+				
+			});
+	
+	//if none of the conditions above returned next(), then 404
+	//res.status(404).send("Sorry can't find that!");
+
+}
+
+
+function hasAccessToTeacherHome(req, res, next) {
+	//(!isTeacherHomePagePrivate || isOwner || isStudentInAnyClassOfThatTeacher)
+
+// isTeacherHomePagePrivate?
+		User.findOne({'username': req.params.username})
+			.exec(function(err, usr) {
+
+			  if (err) {res.send(err);}
+
+				//page doesn't exist
+				if (!usr) {
+  				res.status(404).send("Sorry, can't find that teacher!");
+					return;
+				}				
+
+				//not private, so display page
+				if (!usr.isPrivate) { 
+					 return next();		
+				} else {
+					
+					// isOwner?
+   				if (req.isAuthenticated()) {
+      			
+      			//YES! user=owner
+						if (req.user.username == req.params.username){
+							return next();				
+						} else {
+							
+						
+							//get all classids for that teacherid
+							Klass.find({teacherId: usr._id}, {_id: 1})
+								.exec(function(err, docs) {
+
+    						// Map the docs into an array of just the _ids
+    						var classIds = docs.map(function(doc) { return doc._id; });
+
+    						// Get the studentKlass records for that set of klasses and that student.
+    						StudentKlass.findOne({'klassId': {$in: classIds}, 'studentId': req.user._id})
+									.exec(function(err, sk) {
+
+			  						if (err) {res.send(err);}
+
+										//YES, student in A class of this teacher
+										if (sk)
+  										return next();  
+									
+										res.status(404).send("Sorry, it doesn't look like you have a class with this teacher.");
+										return;
+								
+								});
+							});							
+													
+						} //end else is not owner
+						
+	 				} else {
+							res.status(404).send("Sorry, not allowed");
+							return;
+					}
+					
+				} //end else is private
+				
+			});
+	
+	//if none of the conditions above returned next(), then 404
+	//res.status(405).send("Sorry can't find that!");
+
 }

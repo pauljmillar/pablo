@@ -11,7 +11,11 @@ var assignmentGroupSchema = mongoose.Schema({
         isPublic    : { type: Boolean, default: true},
         icon        : String,
         createdById  :  {type: Schema.Types.ObjectId, ref: 'User'},
-});
+        klassId  :  {type: Schema.Types.ObjectId, ref: 'Klass'},
+        assignmentGroupNum : { type: Number, default: 0}
+        }  , {
+            timestamps : true  
+        });
 
 
 // create the model for users and expose it to our app

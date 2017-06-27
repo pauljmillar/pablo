@@ -3,9 +3,9 @@
   <!--section layout="row" flex=""-->
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;" >
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
       <div class="md-toolbar-tools">
-        <md-button ng-click="classView(thisKlass._id)" class="md-icon-button" aria-label="Settings">
+        <md-button ng-click="agView(thisKlass._id, thisAssignment.assignmentGroupId)" class="md-icon-button" aria-label="Settings">
           <i class="material-icons">arrow_back</i>
         </md-button>
 
@@ -18,7 +18,7 @@
 			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -57,7 +57,7 @@
 		<br/>
 			
 			<!--default block-->
-			<md-card >        
+			<md-card style="border-radius:20px">        
           <md-card-title>
         		<md-card-title-text>
             <span class="md-headline" ng-show="isReadOnly">{{thisAssignment.name}}</span>

@@ -4,15 +4,14 @@ angular.module('klassRosterCtrl', ['ui.bootstrap'])
 .controller('klassRosterCtrl', function($routeParams, $scope, $http, services, $modal, $log, $timeout, $mdSidenav, $mdDialog, studentList, klassRecord, user, $location) {
 
 
-	$scope.studentList = studentList.data;
 	$scope.thisKlass = klassRecord.data;
 	
-	$log.log('studentList:' + JSON.stringify(studentList.data) );
+	//$log.log('studentList:' + JSON.stringify(studentList.data) );
 	$log.log('thisKlass:' + JSON.stringify(klassRecord.data) );
 			$scope.user = user.data;
-			$scope.userId = user.data._id;
-			$scope.email = user.data.local.email;
-			$scope.fname = user.data.firstName;
+			//$scope.userId = user.data._id;
+			//$scope.email = user.data.local.email;
+			//$scope.fname = user.data.firstName;
 
 	// making these 2 independent, as getKlasses can use the userid from passport.  So it can fire without waiting for the result of getUserId
 //	services.getUserId()
@@ -21,20 +20,25 @@ angular.module('klassRosterCtrl', ['ui.bootstrap'])
 	//		$scope.email = data.local.email;
 	//	});
 
-	services.getKlasses()
+	services.getStudentsInKlass(klassRecord.data._id)
+		.success(function(data2) {
+		$scope.studentList = data2;
+	});
+	 
+		services.getKlasses()
 		.success(function(data2) {
 			$scope.klassList = data2;
 	});
-	 
+	
 	$scope.changeView = function(view){
     $location.path('/'+view); // path not hash
   };
 
-	$scope.classView = function(id){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
-		else 
-    	$location.path('/class/' + id);
+	$scope.classView = function(username, klassNum){
+		//if ($scope.user.userType == "student")
+    //	$location.path('/studentclass/' + id);
+		//else 
+    	$location.path('/educate/' + username + '/' + klassNum);
   };
 	
 	$scope.goAssignments = function() {

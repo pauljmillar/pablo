@@ -11,36 +11,75 @@
      <md-content>
       <md-list flex>
         <!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
-        <md-list-item class="md-2-line" ng-click="changeView(dashboard)" >
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
 					<i class="material-icons md-avatar" >home</i>
           <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
         </md-list-item>
-			<md-divider ></md-divider>
-        <md-list-item class="md-2-line" ng-click="goAssignments()">
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
 					<i class="material-icons md-avatar" >assignment</i>
           <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
         </md-list-item>
-				        <md-subheader class="md-no-sticky">Teaching</md-subheader>
+				<md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+       	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
 				 </md-list-item>
 	<!--only show the following stream, student, and about links on mobile view -->
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id)" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>stream</h3></div>
 					</md-list-item>
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/students')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>students</h3></div>
 					</md-list-item>					
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/about')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>about</h3></div>
 					</md-list-item>
 				</div>
+
+			<md-subheader ng-show="!user" class="md-no-sticky">Standard Curriculum</md-subheader>
+				<div ng-show="!user">
+	
+				<md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>			
+					
+				</div>				
+				
 
 			 </md-list>
 		</md-content>
@@ -50,7 +89,7 @@
 
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;" >
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
       <div class="md-toolbar-tools">
         <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
           <i class="material-icons">menu</i>
@@ -60,19 +99,19 @@
         </h1>
 				
         <span flex></span>
-			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile">
-      <md-nav-item md-nav-click="classView(thisKlass._id)"  name="stream">Stream</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/students')" name="students">Students</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/about')"  name="about">About</md-nav-item>
+			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile" ng-show="(user && user.userType == student) || (user && user.isPremium == true && user.username == thisUsername)" >
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)"  name="stream">Stream</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" name="students">Students</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')"  name="about">About</md-nav-item>
     </md-nav-bar>
 			  <span flex></span>
 		
-				<md-button ng-show="user._id == '58cab7d8796c46353244cf54'" class="md-raised" aria-label="Sign up" href="/signup" target="_self">Sign Up</md-button>
+				<md-button ng-show="!user" class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
 
-			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
+			<md-menu ng-show="user" md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button  ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -94,283 +133,17 @@
       </md-menu-content>
     </md-menu>		
       </div>
-
-			<!-- /ANGULAR MATERIAL  TOOLBAR -->
-
-
 </md-toolbar>	
 
-	    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;">
+			<!-- /ANGULAR MATERIAL TOOLBAR -->	
+	
+	<!-----------------------------------NEW------------------------------------------->
+	
+		    <md-content flex class="md-padding" style="margin-top: 120px; background-color: #e9eaec;">
 
 
 <div class="container" >
 	<div class="row">
-
-	
-<style>
-	img:hover {
-    opacity: 0.8;
-    filter: alpha(opacity=80); /* For IE8 and earlier */
-}
-	</style>
-	
-		<div class="col-md-8">
-			<!--default block-->
-			<md-card >  
-      	<md-card-title>
-          <md-card-avatar><img ng-src="./../img/icons/{{thisAG.icon}}" style="width:90px" /> </md-card-avatar>
-					<md-card-title-text>
-          	<span class="md-headline">{{thisAG.name}}</span>
-            <span class="md-subhead"> {{thisAG.description}}</span>
-					</md-card-title-text>
-				</md-card-title>
-				<md-card-content>
-
-				<span flex>
-						
-							
-				<!-- <div ng-repeat="assignment in assignmentList track by $index"> -->
-				<div class="row">
- 
-					<div class="col-lg-4 col-md-4 col-sm-6" ng-hide="assignmentList.length > 0">
-							
-						<md-card >
-					<md-card-header>
-          <md-card-avatar>
-							<i class="material-icons">check_circle</i>
-						</md-card-avatar>
-          <md-card-header-text>
-            <span class="md-title">First Assignment</span>
-            <span class="md-subhead">Short description</span>
-          </md-card-header-text>
-        </md-card-header>
-        			<md-card-content style="height:100px;">
-         <p>
-            1 sentence summary of lesson. Clicking 'Start' or the Title will begin the assignment itself. </p>
-					
-        			</md-card-content>
-							<md-card-actions layout="row" layout-align="start center" >
-								<md-card-icon-actions>
-									<md-button>Start</md-button>
-
-            			<span flex></span>
-										<md-menu>
-											<md-button class="md-icon-button text-muted" aria-label="Favorite" ng-click="openMenu($mdOpenMenu, $event)">
-          							<i class="material-icons">more_vert</i>
-            					</md-button>
-      								<md-menu-content width="3">
-        								<md-menu-item>
-          								<md-button ng-click="" disabled="disabled">          
-														<div class="valign-center"><i class="material-icons">delete</i>archive</div>
-          								</md-button>
-        								</md-menu-item>
-        								<md-menu-item>
-          								<md-button ng-click="deleteKlass(klass._id, $index)">
-														<div class="valign-center"><i class="material-icons">delete_forever</i>delete</div>
-          								</md-button>
-        								</md-menu-item>
-      								</md-menu-content>
-    								</md-menu>			
-          			</md-card-icon-actions>
-        			</md-card-actions>
-      			</md-card>
-					</div>
-					
-			</div> <!--/row-->
-		<!-- </div>-->	<!--end ngRepeat-->		
-			
-					<div class="row">
-
-				<div ng-repeat="assignment in assignmentList track by $index"> 
- 
-					<div class="col-lg-4 col-md-4 col-sm-6" >
-							
-						<md-card >
-					<md-card-header>
-          <md-card-avatar>
-							<i class="material-icons">check_circle</i>
-						</md-card-avatar>
-          <md-card-header-text>
-            <span class="md-title">{{assignment.name}}</span>
-            <span class="md-subhead">Build</span>
-          </md-card-header-text>
-        </md-card-header>
-        			<md-card-content style="height:100px;">
-         <p> {{assignment.description}} </p>
-					
-        			</md-card-content>
-							<md-card-actions layout="row" layout-align="start center" >
-								<md-card-icon-actions>
-									<md-button>Start</md-button>
-
-            			<span flex></span>
-										<md-menu>
-											<md-button class="md-icon-button text-muted" aria-label="Favorite" ng-click="openMenu($mdOpenMenu, $event)">
-          							<i class="material-icons">more_vert</i>
-            					</md-button>
-      								<md-menu-content width="3">
-        								<md-menu-item>
-          								<md-button ng-click="" disabled="disabled">          
-														<div class="valign-center"><i class="material-icons">delete</i>archive</div>
-          								</md-button>
-        								</md-menu-item>
-        								<md-menu-item>
-          								<md-button ng-click="deleteKlass(klass._id, $index)">
-														<div class="valign-center"><i class="material-icons">delete_forever</i>delete</div>
-          								</md-button>
-        								</md-menu-item>
-      								</md-menu-content>
-    								</md-menu>			
-          			</md-card-icon-actions>
-        			</md-card-actions>
-      			</md-card>
-					</div>
-					 </div>	<!--end ngRepeat-->		
-		
-			</div> <!--/row-->
-
-					
-					
-					
-					
-<md-divider  ></md-divider>						
-			
-					      	<md-card-title>
-        	<md-card-title-text>
-          	<span class="md-headline">What this Assignment Group is About.</span>
-            <span class="md-subhead">  Build your own something or other</span>
-					</md-card-title-text>
-				</md-card-title>
-				<md-card-content>
-
-         <p>
-            The titles of Washed Out's breakthrough song and the first single from Paracosm share the
-					 two </p>
-					
-        			</md-card-content>					
-						
-						
-					</span>
-						<md-button class="md-raised" ng-click="showAssignment($event)">Assign</md-button>
-					</md-card-content>
-			</md-card>
-
-<style>
-			
-.label-as-badge {
-    border-radius: 1em;
-}
-}</style>
-			
-			<div ng-repeat="assignment in assignmentList track by $index">
-
-				<md-card style="margin-bottom:30px">			
-				<md-toolbar style="background-color:#fff; color:black;">
-			<div class="md-toolbar-tools">
-					<md-button class="md-icon-button" ng-click="">
-						<i class="material-icons">{{assignment.isAnnouncement ? 'announcement' : 'assignment'}}</i>
-					</md-button>
-					<h2 class="hideOnMobile">{{assignment.isAnnouncement ? 'Announcement' : 'Assignment'}}</h2>
-					<span flex></span>
-					<h4 ng-hide="assignment.isAnnouncement">						
-						<span class="hideOnMobile"> <span ng-class="isDueTodayOrLate(assignment.due) ? 'bg-primary' : 'text-muted'">DUE</span></span> {{assignment.due | date:"EEE, MMM dd"}}</h4>
-					<md-button class="md-icon-button" ng-click="cancel()">
-						<i class="material-icons">more_vert</i>
-					</md-button>
-				</div>
-			</md-toolbar>
-					 
-			<md-card-title ng-hide="assignment.isAnnouncement">
-				<md-card-title-text>
-					<span  class="md-headline"><a style="text-decoration:none; color:black" ng-href="/class/{{thisKlass._id}}/assignment/{{assignment._id}}/details">{{assignment.name}}</a>	</span>
-					<span  class="md-subhead">{{assignment.description}}</span>
-			</md-card-title-text>
-
-			<md-card-title-media >
-  			<a style="text-decoration:none; color:black" ng-href="/class/{{thisKlass._id}}/assignment/{{assignment._id}}/review/list">	
-          <div class="md-media-sm card-media" >
-							<h1>{{assignment.numComplete}} </h1>
-							<span  class="md-subhead" style="color:grey">complete</span>
-					</div>
-				</a>
-       </md-card-title-media>
-
-				<md-card-title-media>
-					<a style="text-decoration:none; color:black" ng-href="/class/{{thisKlass._id}}/assignment/{{assignment._id}}/review/list">	
-            <div class="md-media-sm card-media">
-							<h1>{{assignment.numNotComplete}}</h1>
-							<span  class="md-subhead" style="color:grey">not done</span>
-						</div>
-					</a>
-        </md-card-title-media>
-				
-			</md-card-title>
-	
-			<md-card-content ng-show="assignment.isAnnouncement">
-					<span  class="">{{assignment.name}}</span>
-			</md-card-content>
-			
-					<!--this is the OLD 'addcomment' panel-->
-				<!--div class="panel" style="border-bottom: 1px solid #e9eaec; margin-bottom: 0px;">
-					<div class="panel-body">
-						<input type="text" class="" ng-model="assignment.comments.content" data-toggle="collapse" placeholder="share with your class" data-target="{{ '#comment-' + $index }}" style="border:0px" name="commentText"></input>
-						<div id="{{ 'comment-' + $index }}" class="collapse">
-							<div class="panel">
-								<!-- button class="btn-primary pull-right" ng-click="assignment.comments.push({author: {firstName: fname}, content: assignment.comments.content}); addComment(assignment._id, assignment.comments.content); assignment.comments.content='';"-->
-								<!--button class="btn-primary pull-right" ng-click=" addComment(assignment._id, $index, assignment.comments.content); assignment.comments.content='';">
-											POST
-										</button>
-								<button class="btn-primary pull-right" ng-click="cancelComment()">
-											CANCEL
-										</button>
-							</div>
-						</div>
-					</div>
-				</div--><!--/close add comment-->
-			
-
-					
-				<!--/NEW add comment-->	
-				<md-list-item class="md-1-line"   style="background-color:rgba(158,158,158,0.2)">
-					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data={{fname}} shape="round"></ng-letter-avatar></span>
-
-					<form name="commentForm" ng-cloak style="min-width:70%">
-         		<md-input-container class="md-block"  md-no-float>
-            	<input ng-model="assignment.comments.content" placeholder="Add class comment..." name="com" ng-focus="isSearchFocused=true"  >
-          	</md-input-container>
-						<md-icon md-font-icon="material-icons" class="md-secondary" ng-click=" addComment(assignment._id, $index, assignment.comments.content); assignment.comments.content='';" style="padding-right:20px;" ng-show="isSearchFocused">done</md-icon>
-						<md-icon md-font-icon="material-icons" class="md-secondary" ng-click="cancelComment(); assignment.comments.content='';" style="padding-right:40px;" ng-show="isSearchFocused">cancel</md-icon>
-					</form>
-					<md-divider ></md-divider>
-	  		</md-list-item>
-					
-				<!--/close NEW add comment-->
-				
-								<!--/ng repeat comments-->
-					<!--div ng-repeat="comment in assignment.comments track by $index">
-					<div class="panel" style="border-bottom: 1px solid #e9eaec; margin-bottom: 0px;">
-						<div class="panel-heading">{{comment.author.firstName}} posted {{comment.posted | date:"MM/dd 'at' h:mma"}}</div>
-						<div class="panel-body">{{comment.content}}</div>
-					</div>
-				</div--> <!--/ng repeat comments-->
-				
-				<!--/ng NEW repeat comments-->
-					<md-list-item class="md-3-line" ng-repeat="comment in assignment.comments | reverse track by $index  " >
-					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data={{comment.author.firstName}} shape="round"></ng-letter-avatar></span>
-          <div class="md-list-item-text" layout="column">
-            <h3>{{comment.author.firstName}}</h3>
-            <h4>{{comment.posted | date:"MM/dd 'at' h:mma"}}</h4>
-            <p>{{ comment.content}}</p>
-          </div>
-				<md-divider ng-if="!$last"></md-divider>
-        </md-list-item>
-				<!--/ng NEW repeat comments-->
-				
-		</md-card><!--/close card--->
-			</div> <!--/ng repeat assignments-->
-
-		</div> <!--/grid of 8-->
-
 		<div class="col-md-3">
 			
 <!--show class name here in a card if on mobile -->			
@@ -382,8 +155,8 @@
 			</div><!--/panel--->
 			</md-card>
 			
-			<md-card>
-			<div class="panel">
+			<md-card style="border-radius:20px">
+			<div class="panel" style="border-radius:20px 20px 0 0">
 				<div class="panel-heading">
 					<h4 class="">Assignments <a class="text-muted" ng-href="/assignments"> all</a></h4>
 					<hr>
@@ -410,19 +183,11 @@
 			</div><!--/panel--->
 			</md-card>
 	
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
-					<h4 class="">Join Code</h4>
-					<h5 class="">{{thisKlass.joinCode}}</h5>
-					<br/>
-				</div>
-			</div><!--/panel--->
-			</md-card>
+
 
 			<!--Leaderboard -->
-			<md-card ng-show="thisKlass.pointsOn">
-			<div class="panel">
+			<md-card ng-show="thisKlass.pointsOn" style="border-radius:20px">
+			<div class="panel" style="border-radius:20px 20px 0 0">
 				<div class="panel-heading">
 					<h4 class="">Leaderboard</h4>
 					<md-divider></md-divider>				
@@ -438,6 +203,179 @@
 	
 				
 				</div> <!--/end 3 col width-->
+	
+<style>
+	img:hover {
+    opacity: 0.8;
+    filter: alpha(opacity=80); /* For IE8 and earlier */
+}
+	</style>
+	
+		<div class="col-md-8">
+			<!--default block-->
+			<md-card ng-hide="assignmentList.length > 0" style="border-radius: 20px">        
+ 				<md-content layout-padding style="border-radius:20px 20px 0 0">
+					<div layout="row">
+						<div layout="column" flex>
+							<h2>{{thisAG.name}} - {{thisAG.assignmentGroupNum}}</h2>
+            	<span class="md-subhead"> {{thisAG.description}}</span>
+						</div>
+						<div layout="row" flex="nogrow">	
+						<md-button ng-hide="!user || user.username != thisUsername" ng-click="classView(thisUsername, thisKlassNum+'/about')" class="md-icon-button" aria-label="edit">
+							<md-icon class="material-icons">edit</md-icon></md-button>
+						</div>
+					</div>
+				</md-content>
+				<md-card-content>
+
+					<span flex>
+						
+								
+						<div class="row text-center"><a ng-href="/class/{{thisKlassId}}/ag/{{thisAG._id}}"><img src="./../img/icons/keyboard.png"></img></a></div>
+						<div class="row text-center "><img style="margin: 20px" class="" src="./../img/icons/archives.png"></img><img style="margin: 20px" class="" src="./../img/icons/wrench.png"></img></div>
+						<div class="row text-center "><img style="margin: 20px" class="" src="./../img/icons/light-bulb.png"></img><img style="margin: 20px" class="" src="./../img/icons/newspaper.png"></img></div>
+						<div class="row text-center "><img style="margin: 20px" class="" src="./../img/icons/flask.png"></img><img style="margin: 20px" class="" src="./../img/icons/archives.png"></img></div>
+						<div class="row text-center"><img src="./../img/icons/chat.png"></img></div>
+
+					</span>
+						<md-button class="md-raised" ng-click="showAssignment($event)">Assign</md-button>
+					</md-card-content>
+			</md-card>
+
+<style>
+			
+.label-as-badge {
+    border-radius: 1em;
+}
+}</style>
+			
+
+			<md-card ng-show="assignmentList.length > 0" style="border-radius: 20px">        
+ 				<md-content layout-padding style="border-radius:20px 20px 0 0">
+					<div layout="row">
+						<div layout="column" flex>
+							<h2><img ng-src="./../img/icons/{{thisAG.icon}}" style="margin: 20px"></img>					
+{{thisAG.name}}</h2>
+            	<span class="md-subhead"> {{thisAG.description}} - {{thisAG.assignmentGroupNum}}</span><br/>
+						
+						         <span class="md-subhead" style="color:grey">
+             Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+					</span>
+<youtube-video video-url="anotherGoodOne" style="margin:20px"></youtube-video>
+					
+						
+						
+						
+						
+						</div>
+					
+						<div layout="row" flex="nogrow">	
+						<md-button ng-hide="!user || user.username != thisUsername" ng-click="classView(thisUsername, thisKlassNum+'/about')" class="md-icon-button" aria-label="edit">
+							<md-icon class="material-icons">edit</md-icon></md-button>
+						</div>
+					</div>
+				</md-content>
+				<md-card-content>
+
+					<span flex>
+						
+				<div ng-repeat="assignment in assignmentList track by $index">
+					
+						<!--div class="md-card">
+							<div class="row">
+								<a ng-href="/class/{{thisKlass._id}}/ag/{{assignmentGroup.assignmentGroupId._id}}"><img ng-src="./../img/icons/{{assignmentGroup.assignmentGroupId.icon}}" style="margin: 20px"></img></a>
+								{{assignmentGroup.assignmentGroupId.name}} 
+					</div>
+							<div class="row text-right">
+							                <md-button  ng-click="showDeleteConfirm($event, $index, assignmentGroup.assignmentGroupId._id)" class="md-icon-button" aria-label="delete">
+						<md-icon class="material-icons">close</md-icon>
+        </md-button>
+          </md-button>
+						</div>
+						</div-->
+					
+					
+			<div class="md-card" >
+				
+				
+							<md-toolbar style="background-color:#fff; color:black;">
+			<div class="md-toolbar-tools">
+					<md-button class="md-icon-button" ng-click="">
+						<i class="material-icons">{{assignment.isAnnouncement ? 'announcement' : 'assignment'}}</i>
+					</md-button>
+					<h2 class="hideOnMobile">{{assignment.isAnnouncement ? 'Announcement' : 'Assignment'}}</h2>
+					<span flex></span>
+					<h4 ng-hide="assignment.isAnnouncement">						
+						<span class="hideOnMobile"> <span ng-class="isDueTodayOrLate(assignment.due) ? 'bg-primary' : 'text-muted'">DUE</span></span> {{assignment.due | date:"EEE, MMM dd"}}</h4>
+					<md-button class="md-icon-button" ng-click="cancel()">
+						<i class="material-icons">more_vert</i>
+					</md-button>
+				</div>
+			</md-toolbar>	
+				
+				
+        <md-card-title>
+          <!--md-card-title-text>
+						<span class="md-headline"><a ng-href="/class/{{thisKlass._id}}/ag/{{assignmentGroup.assignmentGroupId._id}}">{{assignment.assignmentGroupId.name}}</a> </span>
+            <span class="md-subhead" style="font-weight:bold;">3 lessons</span><span class="md-subhead">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+
+						</span>
+          </md-card-title-text-->
+				<md-card-title-text>
+					<span  class="md-headline">
+						<!--a style="" ng-href="/class/{{thisKlassId}}/assignment/{{assignment._id}}/details"-->
+						<a style="" ng-href="/educate/{{thisUsername}}/{{thisKlassNum}}/{{thisAG.assignmentGroupNum}}/{{assignment.assignmentNum}}">
+							{{assignment.name}} - {{assignment.assignmentNum}}</a>	</span>
+					<span  class="md-subhead" >{{assignment.description}}</span>
+			</md-card-title-text>
+					
+          <!--md-card-title-media>
+            <div class="md-media-lg card-media">	<a ng-href="/class/{{thisKlassId}}/assignment/{{assignment._id}}/details"><img ng-src="./../img/icons/{{assignment.icon}}" style="margin: 20px; height:100px; width:100px"></img></a>
+</div>
+          </md-card-title-media-->
+				
+				
+							<md-card-title-media >
+  			<a style="text-decoration:none; color:black" ng-href="/class/{{thisKlassId}}/assignment/{{assignment._id}}/review/list">	
+          <div class="md-media-sm card-media" >
+							<h1>{{assignment.numComplete}} </h1>
+							<span  class="md-subhead" style="color:grey">complete</span>
+					</div>
+				</a>
+       </md-card-title-media>
+
+				<md-card-title-media>
+					<a style="text-decoration:none; color:black" ng-href="/class/{{thisKlassId}}/assignment/{{assignment._id}}/review/list">	
+            <div class="md-media-sm card-media">
+							<h1>{{assignment.numNotComplete}}</h1>
+							<span  class="md-subhead" style="color:grey">not done</span>
+						</div>
+					</a>
+        </md-card-title-media>
+				
+				
+        </md-card-title>
+						
+        <md-card-actions layout="row" layout-align="end center">
+          <!--md-button>Reorder</md-button>
+				  <md-button  ng-click="showDeleteConfirm($event, $index, assignmentGroup.assignmentGroupId._id)"  aria-label="delete">Delete</md-button-->        
+					</md-card-actions>
+      </div>
+					        <md-divider ng-if="!$last"></md-divider>
+
+					
+					
+				</div> <!--/ng repeat assignments-->							
+
+
+					</span>
+
+			</md-card-content>
+			</md-card>
+
+
+
+		</div> <!--/grid of 8-->
 
 
 <div class="col-md-1">
@@ -445,7 +383,7 @@
 <div id="floater">
 
 			<!-----------------------FAB--------------------------->
-			<md-fab-speed-dial  md-direction="up" class="md-scale md-fab-bottom-right" >
+			<md-fab-speed-dial  md-direction="up" class="md-scale md-fab-bottom-right" ng-hide="!user || user.username != thisUsername" >
 				<md-fab-trigger>
 					<md-button aria-label="menu" class="md-fab md-warn">
           <i class="material-icons wi">add</i>				
@@ -572,6 +510,10 @@
 		</form>
 	</md-dialog>
 </script>
+
+
+
 				
 	</md-content>
+	
   </div>

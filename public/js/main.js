@@ -8,6 +8,11 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
     $routeProvider
 
         // home page for teachers
+        .when('/educate', {
+            templateUrl: '/views/educate.html',
+            controller: 'klassesCtrl'
+        })
+        // home page for teachers
         .when('/demohome', {
             templateUrl: '/views/classes.html',
             controller: 'klassesCtrl',
@@ -20,12 +25,12 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
             templateUrl: '/views/classes.html',
             controller: 'klassesCtrl',
              resolve: {
-               //factory: isTeacher           
+               factory: isLoggedIn           
              }      
         })
         // profile page during signup - required fields
         .when('/profile-signup', {
-            templateUrl: '/views/profile-signup.html',
+            templateUrl: '/views/profile.html',
             controller: 'profileCtrl',
              resolve: {
                  factory: hasAccount,
@@ -39,7 +44,7 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
             templateUrl: '/views/profile.html',
             controller: 'profileCtrl',
              resolve: {
-               //factory: isTeacher,
+                 factory: isLoggedIn,
                  user: function(services, $route){
                   return services.getUserId();
                 }
@@ -87,7 +92,66 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
                 }              
              }
         })
-        //Assignment Group view for teachers
+        //NEW class view for teachers
+        .when('/educate/:username/:klassnum', {
+             templateUrl: '/views/class.html',
+             controller: 'klassCtrl',
+             resolve: {
+               factory: isTeacher,
+                user: function(services, $route){
+                  return services.getUserId();
+                },
+                klassRecord: function(services, $route){
+                 var klassnum = $route.current.params.klassnum;
+                 var username = $route.current.params.username;
+                 return services.getKlass2(username, klassnum);
+                },
+                assignmentGroupList: function(services, $route){
+                 var klassnum = $route.current.params.klassnum;
+                 var username = $route.current.params.username;
+                 return services.getAssignmentGroups2(username, klassnum);
+                }              
+             }
+        })
+        //NEW class about
+        .when('/educate/:username/:klassnum/about', {
+             templateUrl: '/views/classAbout.html',
+             controller: 'klassAboutCtrl',
+             resolve: {
+               factory: isTeacher,
+                user: function(services, $route){
+                  return services.getUserId();
+                },
+                klassRecord: function(services, $route){
+                 var klassnum = $route.current.params.klassnum;
+                 var username = $route.current.params.username;
+                 return services.getKlass2(username, klassnum);
+                }           
+             }
+        })  
+    
+        //NEW class about
+        .when('/educate/:username/:klassnum/students', {
+             templateUrl: '/views/classRoster.html',
+             controller: 'klassRosterCtrl',
+             resolve: {
+               factory: isTeacher,
+                user: function(services, $route){
+                  return services.getUserId();
+                },
+                klassRecord: function(services, $route){
+                 var klassnum = $route.current.params.klassnum;
+                 var username = $route.current.params.username;
+                 return services.getKlass2(username, klassnum);
+                },
+                studentList: function(services, $route){
+                  //var klassId = $route.current.params.id;
+                  return null;
+                }          
+             }
+        })        
+    
+    //Assignment Group view for teachers
         .when('/class/:classId/ag/:agId', {
              templateUrl: '/views/assignmentGroup.html',
              controller: 'assignmentGroupCtrl',
@@ -110,7 +174,55 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
                 }              
              }
         })
-        //individual assignment view for TEACHERS
+    //NEW Assignment Group view for teachers
+        .when('/educate/:username/:klassnum/:agnum', {
+             templateUrl: '/views/assignmentGroup.html',
+             controller: 'assignmentGroupCtrl',
+             resolve: {
+               factory: isTeacher,
+                user: function(services, $route){
+                  return services.getUserId();
+                },
+                agRecord: function(services, $route){
+                 var username = $route.current.params.username;
+                 var klassnum = $route.current.params.klassnum;
+                 var agnum = $route.current.params.agnum;
+                 return services.getAssignmentGroup2(username, klassnum, agnum);
+                },
+                //klassRecord: function(services, $route){
+                // var klassId = $route.current.params.id;
+                // return services.getKlass(klassId);
+                //},
+                assignmentList: function(services, $route){
+                //  var agId = $route.current.params.agId;
+                //  return services.getAssignmentsForGroup(agId);
+                  return null;
+                }              
+             }
+        })
+    //NEW Assignment view for teachers
+        .when('/educate/:username/:klassnum/:agnum/:asid', {
+             templateUrl: '/views/assignmentDetails.html',
+             controller: 'assignmentDetailsCtrl',
+             resolve: {
+               factory: isTeacher,
+                user: function(services, $route){
+                  return services.getUserId();
+                },
+                agRecord: function(services, $route){
+                 var username = $route.current.params.username;
+                 var klassnum = $route.current.params.klassnum;
+                 var agnum = $route.current.params.agnum;
+                 return services.getAssignmentGroup2(username, klassnum, agnum);
+                },
+                klassRecord: function(services, $route){
+                 var klassnum = $route.current.params.klassnum;
+                 var username = $route.current.params.username;
+                 return services.getKlass2(username, klassnum);
+                }
+             }
+        })
+    //individual assignment view for TEACHERS
         .when('/class/:cid/assignment/:aid/details', {
              templateUrl: '/views/assignmentDetails.html',
              controller: 'assignmentDetailsCtrl',
@@ -295,7 +407,65 @@ var klassApp = angular.module('klassApp', ['ngMaterial', 'ngRoute', 'klassesCtrl
     .accentPalette('deep-orange');
 });
   
-  klassApp.filter('reverse', function() {
+
+klassApp.directive('nameunique', function($q, $timeout, $http){
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    /* 
+       The link function allows us to attach a DOM listener and update the DOM when needed. In this case, 
+       we want to update the DOM as we're typing and notify if the username is used or not.
+       ctrl = ngModelController
+       by setting the require: 'ngModel', this pass the ngModelController as the 4th parameter.
+     */
+    link: function(scope, elm, attrs, ctrl){
+    
+         var orig_name = attrs.nameunique;
+     //var usernames = ['Champs82','Starbucks91', 'Panera93'];
+      /* Used to perform asyncronous validation on the username directive. */
+
+      ctrl.$asyncValidators.nameunique = function(modelValue, viewValue){
+       
+
+        if(ctrl.$isEmpty(modelValue)){
+          // consider empty model value
+          return $q.when();
+        }
+
+        
+        var def = $q.defer();
+        def.notify('Querying the jsonplaceholder.typicode.com service')
+        $http({method: 'GET', url: '/api/user/username/'+modelValue+'' }).then(
+          function(response){
+            
+
+            if((!response.data) || (response.data && response.data.username == orig_name)){
+              //ngModel.$setValidity('nameunique', true)
+               def.resolve();    
+            }
+            else{
+               //ngModel.$setValidity('nameunique', false)
+               def.reject();
+            }
+            
+          }, 
+          function(response){
+            //alert("O no, you a problem man!!!");
+          }
+        );
+
+        
+        return def.promise;
+      };
+    }
+  };
+});
+
+
+
+
+
+klassApp.filter('reverse', function() {
   return function(items) {
     if (!angular.isArray(items)) {return items;}
     else {return items.slice().reverse();}
@@ -337,12 +507,12 @@ var hasAccount = function ($q, $rootScope, $location, $http) {
 var deferred = $q.defer();
     $http.get("/api/userid")
         .success(function (response) {
-            var firstName = response.firstName;
-            if (response.firstName) { 
-              if (response.userType == 'student')
-                $location.path('/studentdashboard');
-              else
+            //var firstName = response.firstName;
+            if (response.username) { 
+              if (response.userType == 'teacher')
                 $location.path('/dashboard');
+              else
+                $location.path('/studentdashboard');
             }
             else {deferred.resolve(true);}
         })
@@ -353,6 +523,21 @@ var deferred = $q.defer();
     return deferred.promise;
 };
 
+var isLoggedIn = function ($q, $rootScope, $location, $http) {
+  
+    var deferred = $q.defer();
+    $http.get("/api/userid")
+        .success(function (response) {
+            //var firstName = response.firstName;
+            if (response.username) { deferred.resolve(true);}
+            else {$location.path('/educate/');}
+        })
+        .error(function () {
+            deferred.reject();
+           // $location.path($location.path());
+         });
+    return deferred.promise;
+};
 
 //  .filter('startFrom', function(){
 //

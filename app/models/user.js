@@ -25,15 +25,20 @@ var userSchema = mongoose.Schema({
         id           : String,
         token        : String,
         email        : String,
-        name         : String
+        name         : String 
     },
     firstName     : String,
     lastName      : String,
     userType      : {type: String, default: "student"},
     points        : Number,
-    level         : Number
+    level         : Number,
+    username      : String,
+    avatar        : String,
+    isPrivate      : {type: Boolean, default: false},
+    isPremium      : {type: Boolean, default: false}
 
-
+}, {
+    timestamps : true                                    
 });
 
 // generating a hash

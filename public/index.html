@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
-		<title>pablo - tech class for every child</title>
+		<base href="/">
+		<title>pablo - modern tech-ed curriculum for k-8</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The best collection of things to do nearby. Tag your event tweets with #EVSTK to get included.">
+<meta name="description" content="Kidmade is an online code editor for kids. They can easily experiment and build their own web site in minutes.">
 
-		<base href="/">
 	
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="./img/favicon-rocket.ico" type="image/x-icon" />
 
   <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
@@ -23,7 +23,8 @@ body, html {
     /*background-position: center;
     background-size: cover;
     background-image: url("./images/boyny.jpg");*/
-	  background-color: #79C1C6;
+	  /**background-color: #79C1C6; baby blue **/
+	  background-color: #1E8BC3;
 	  height:100vh;
 }
 
@@ -60,17 +61,16 @@ body, html {
     </li>
 		
 		<a href="/" class="w3-xxlarge w3-left dynamic-color" style="text-decoration:none; font-weight:bold; ">pablo</a>
-		<a href="/" class="w3-bar-item w3-btn   w3-round-large w3-white w3-border w3-border-white   w3-medium w3-margin-top w3-margin-right w3-right w3-hide-small w3-hide-medium " style=" ">Login</a>
+		<a href="/login" class="w3-medium dynamic-color  w3-right w3-hide-small w3-hide-medium " style=" text-decoration:underline; font-weight:bold; margin-right:40px; margin-top: 25px ">Login</a>
   </ul>
 </div>
 
 <!-- Sidenav on small screens when clicking the menu icon -->
 <nav class="w3-sidenav  w3-white w3-card-2 w3-animate-left" style="display:none;z-index:4; width:320px;" id="mySidenav">
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-large w3-padding-16">Close ×</a>
-  <a href="/chicago" onclick="w3_close()" class="w3-large w3-padding-16">events</a>
-  <a href="#posting" onclick="w3_close()" class="w3-large w3-padding-16">post</a>
-  <a href="#faq" onclick="w3_close()" class="w3-large w3-padding-16">faq</a>
-  <a href="#api" onclick="w3_close()" class="w3-large w3-padding-16">api</a>
+  <a href="/login" onclick="w3_close()" class="w3-large w3-padding-16">login</a>
+  <a href="#" onclick="w3_close()" class="w3-large w3-padding-16">faq</a>
+  <a href="#" onclick="w3_close()" class="w3-large w3-padding-16">api</a>
 </nav>
 
 <!-- Overlay -->
@@ -78,39 +78,41 @@ body, html {
 	
 <!-- Header with full-height image -->
 <header class="bgimg" id="home" style="">
-	  <div class="w3-row-padding " style="height:90vh;"> 
-    <div class="w3-hide-medium w3-hide-small w3-col m5   " style="margin-top:150px;">
-  			<div class="w3-container " style="text-align:center;">
+	<div  style="height:30vh"></div>
+
+	  <div class=" " style="height:60vh "> 
+				
+    <div class="w3-hide-medium w3-hide-small w3-col m5   " style="text-align:center">
 					<img src="./img/laptop.png">
-				</div>
 		</div>
-    <div class="w3-hide-large w3-mobile  " style="margin-top:150px">
-  			<div class="w3-container " style="text-align:center;">
+    <div class="w3-hide-large w3-mobile  " style="text-align:center" >
 					<img src="./img/laptop_small.png">
-				</div>
 		</div>
 			
-		<div class="w3-col m7 w3-hide-medium w3-hide-small" style=" margin-top:150px">
-  		<div class="w3-container  w3-text-white" style="text-align:center;">
-    		<span class="w3-xxlarge">Every student should have tech class in school. Now they can.</span><br>
-    		<div style="text-align:center;"><a href="/dashboard" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  ">Get Started</a></div>
- 			</div> 
+		<div class="w3-col m7 w3-hide-medium w3-hide-small" style="text-align:center">
+  		<div class="w3-container  w3-text-white" style="">
+    		<span class="w3-xxlarge">Pablo TechEd Curriculum</span><br>
+     		<span class="w3-xlarge">Balanced, Current, and Free.</span><br>
+   		<div style="text-align:center;"><a style="padding-right:30px; padding-left:30px;" href="/educate" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white    w3-margin-top  ">Choose Grade</a></div>
+     		<div style="text-align:center;margin-top:30px; "><a href="/signup" class=" w3-padding-large w3-medium" style="text-decoration:none">Teachers: Create account to customize lessons.</a></div>
+			</div> 
 		</div>
-		<div class="w3-mobile w3-hide-large " style="">
-  		<div class="w3-container  w3-text-white" style="text-align:center;">
-    		<span class="w3-xlarge ">Every student should have tech class in school. Now they can.</span><br>
-    		<div style="text-align:center;"><a href="/chicago" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  ">Get Started</a></div>
-    		<div style="text-align:center;margin-top:30px; "><a href="/chicago" class=" w3-padding-large w3-medium" style="text-decoration:none">Have an Account?</a></div>
+		<div class="w3-mobile w3-hide-large " style="text-align:center">
+  		<div class="w3-container  w3-text-white" style="">
+    		<span class="w3-xlarge ">TechEd Curriculum - balanced, current, and free.</span><br>
+    		<div style="text-align:center;"><a href="/educate" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large  w3-margin-top  ">Choose Grade</a></div>
+    		<div style="text-align:center;margin-top:30px; "><a href="/signup" class=" w3-padding-large w3-medium" style="text-decoration:none">Create Account</a></div>
  			</div> 
 		</div>			
 	</div>
+	
 	<div class="w3-container w3-center w3-hide-small w3-hide-medium  " style="background-color:#414141;height:10vh">
 		<div style="height:1vh">&nbsp;</div>
-			<span class="w3-xlarge w3-text-white" style="8vh">Self-guided tech cirriculum for K-12.  Choose your level and go.</span>
+			<span class="w3-xlarge w3-text-white" style="8vh">Modern TechEd combining Code.org + Scratch + Google Docs. It's free.</span>
 		<div style="height:1vh">&nbsp;</div>
 	</div>	
 	<div class="w3-container w3-center w3-hide-large w3-padding-8   " style="background-color:#414141;height:10vh">
-			<span class="w3-xlarge w3-text-white" style="">Self-guided tech for K-12.</span>
+			<span class="w3-xlarge w3-text-white" style="">Rounded, Modern TechEd.</span>
 	</div>		
 	</header>
 
@@ -177,12 +179,12 @@ body, html {
 <div class="w3-container  w3-padding-64" id="interests">
   <div class="w3-row-padding"> 
     <div class="w3-col m6 new-story" style=" text-align:right; margin-top:30px">
-      <h2>Meet Pablo</h2>
-      <p>Pablo will guide your child or student through a tech class that meets once or twice per week, for students K - 12.</p>
-      <p><a href="/chicago" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">Try it</a></p>
+      <h2>Hands-On Tech Exploration</h2>
+      <p>Our techEd curriculum is free so that every student can comfortable with modern technology, and excel at it.  Our lessons are engineered to allow the students to learn by exploring rather than memorization.</p>
+      <p><a href="/educate" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:#1E8BC3">Choose Grade</a></p>
     </div>
     <div class="w3-col m6">
-      <img class="w3-image w3-round-large" src="./img/robot.png" alt="iphone" width="" height="">
+      <img class="w3-image w3-round-large" src="./img/pablo-ag.png" style="margin-left:20px;" alt="example" width="" height="">
     </div>
   </div>
 </div>
@@ -190,12 +192,12 @@ body, html {
 <div class="w3-container  w3-padding-64">
   <div class="w3-row-padding ">
     <div class="w3-col m6 new-story" style="text-align:right">
-      <img class="w3-image w3-round-large" src="./img/browser.png" alt="laptop" style="margin-right:30px">
+      <img class="w3-image w3-round-large" src="./img/pablo-dashboard.png" alt="laptop" style="margin-right:30px">
     </div>
     <div class="w3-col m6 new-story" style="  margin-top:20px">
-      <h2>Lessons</h2>
-      <p>The reason we have so many events listed is that it's simple to post.  Just include #EVSTK when you tweet your event description.  That's it.</p>
-     <p><a href="#posting" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">Posting Tips</a></p>
+      <h2>Blended Curriculum</h2>
+      <p>We have thoughtful curriculum for students in K-8.  We've blended lessons from tech leaders such as Code.org, Scratch, and Google Docs to give your students and children a wide breadth of experience with current technology.</p>
+     <p><a href="/dashboard" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:#1E8BC3">Curriculum</a></p>
     </div>
   </div>
 </div>
@@ -203,105 +205,38 @@ body, html {
 <div class="w3-container  w3-padding-64" id="">
   <div class="w3-row-padding"> 
     <div class="w3-col m6 new-story" style=" text-align:right; margin-top:20px">
-      <h2>Pablo for School</h2>
-      <p>You can include our list of events, filtered by geography and category, on your site using our Partner API.</p>
-      <p><a href="https://developer.eventstack.co" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:rgb(96,125,139)">API</a></p>
+      <h2>Teachers: Customize Lessons</h2>
+      <p>Teachers can create a free account and customize their curriculum: Create new lessons, modify existing, or pull from our Lesson Library.  And share lessons with your class using an concise url like: trypablo.com/mstyler/1/13/3.</p>
+      <p><a href="/signup" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:#1E8BC3">Go</a></p>
     </div>
     <div class="w3-col m6">
-      <img class="w3-image w3-round-large" src="./img/monitor.png" alt="developer" style="margin-left:30px">
-    </div>
-  </div>
-</div>
-
-		<div class="w3-container w3-row w3-center  w3-padding-8" style="background-color:#414141;">
-      <span class="w3-large w3-text-white">Join thousands of people using eventstack who find things to do nearby.</span>
-</div>	
-
-
-
-
-
-<!-- FAQ -->
-<div class="w3-container  w3-padding-64" style="margin-top:60px" id="faq">
-  <div class="w3-row-padding"> 
-    <div class="w3-col m6 new-story" style=" text-align:right; ">
-			<h2>What is this?</h2>
-      <p>We're listening to twitter for our #EVSTK, and organizing the most complete list of things you can do nearby.  The simplicity of the posting process leads to more a more complete list, including more obscure and interesting events </p>
-    </div>
-    <div class="w3-col m6">
-			<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Join us for an easter egg hunt on the library lawn. Tomorrow at 8am. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/KIDS?src=hash">#KIDS</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/852263738933641217">April 12, 2017</a></blockquote>
-		</div>
-  </div>
-</div>	
-
-<div class="w3-container w3-padding-64" style="margin-top:60px" id="posting">
-  <div class="w3-row-padding ">
-    <div class="w3-col m6 ">
-				<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr">Yoga in the park tomorrow morning at 8am sharp, 4/23. Start your weekend off right at Thomas Park near 5th - $8. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/yoga?src=hash">#yoga</a> <a href="https://twitter.com/hashtag/fitness?src=hash">#fitness</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723510612035248130">April 22, 2016</a></blockquote>
-    </div>
-    <div class="w3-col m6 new-story" style="">
-      <h2>How can I add my event?</h2>
-      <p>It's simple. Tweet the details of your event like you always do, and include #EVSTK and a date (11/23, 11/23/15, 13 Jan, or 'today', 'tomorrow').  </p>
-			<p>If you've posted previously, we already have your info. If not, we'll reply back asking for an address.  </p>
-			<p>And that's it - your event is listed.</p>
+      <img class="w3-image w3-round-large" src="./img/pablo-lesson.png" alt="developer" style="margin-left:30px">
     </div>
   </div>
 </div>
 	
-<div class="w3-container w3-padding-64" style="margin-top:60px"  id="">
-  <div class="w3-row-padding"> 
-    <div class="w3-col m6 new-story" style=" text-align:right; ">
-			<h2>How will you know where the event is?</h2>
-      <p>If your event tweet includes our #EVSTK and a date, and you've never posted with us before, we'll reply back asking for the physical address of the event.  In your reply, include:</p>
-			<p style=" text-align:center; ">
-				<br><b>#EVSTK</b> routes your tweet to our servers. <b>required </b>
-				<br><b>#ADD</b> and the physical address of your event. <b>required </b>
-				<br><b>#PHO</b> and the phone number for your event. <b>optional</b>
-				<br><b>#URL</b> and the url for your event. <b>optional</b>
-			</p> 
-			<p style=" text-align:right; ">We'll save that address and use it for every event your tweet after that.  Here are a few sample address tweet:</p>
-		</div>
-    <div class="w3-col m6">
-			<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/ADD?src=hash">#ADD</a> 1000 N. Sheffield Chicago, IL</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723514118070767616">April 22, 2016</a></blockquote>
-			<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/ADD?src=hash">#ADD</a> 2000 N. Ashland Chicago, IL <a href="https://twitter.com/hashtag/URL?src=hash">#URL</a> <a href="https://t.co/ch01tH6vS5">https://t.co/ch01tH6vS5</a> <a href="https://twitter.com/hashtag/IMG?src=hash">#IMG</a> <a href="https://t.co/mOGZXGQPuE">https://t.co/mOGZXGQPuE</a> <a href="https://twitter.com/hashtag/PHO?src=hash">#PHO</a> 773-123-4567</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723513146326048768">April 22, 2016</a></blockquote>
-		</div>
-  </div>
-</div>		
-
-<div class="w3-container w3-padding-64" style="margin-top:60px" id="" >
-  <div class="w3-row-padding new-story">
-    <div class="w3-col m6">
-				<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr">Yoga in the park tomorrow morning at 8am sharp, 4/23. Start your weekend off right at Thomas Park near 5th - $8. <a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/yoga?src=hash">#yoga</a> <a href="https://twitter.com/hashtag/fitness?src=hash">#fitness</a></p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/723510612035248130">April 22, 2016</a></blockquote>
+<div class="w3-container  w3-padding-64">
+  <div class="w3-row-padding ">
+    <div class="w3-col m6 new-story" style="text-align:right">
+      <img class="w3-image w3-round-large" src="./img/pablo-dashboard.png" alt="laptop" style="margin-right:30px">
     </div>
-    <div class="w3-col m6 new-story" style="">
-      <h2>How can I categorize my event?</h2>
-      <p>We are scanning your event tweet for: #kids #music #art #free #fitness #festivals #food #performance #nightlife</p>
-  
+    <div class="w3-col m6 new-story" style="  margin-top:20px">
+      <h2>Pablo for Schools</h2>
+      <p>Teachers and students can all log in and teachers can customize the lessons, track student progress, and communicate with the class using private message boards.</p>
+     <p><a href="/dashboard" class="w3-btn w3-round-large w3-padding-large w3-large " style="background-color:#1E8BC3">Demo</a></p>
+    </div>
   </div>
-</div>	
- 
-<div class="w3-container w3-padding-64" style="margin-top:60px" id="api">
-  <div class="w3-row-padding"> 
-    <div class="w3-col m6 new-story" style=" text-align:right; ">
-			<h2>I need to take my event down</h2>
-      <p>You can remove any event that came from your twitter handle by tweeting #EVSTK #DELETE #ID _responseID_. See the example:</p>
- 			<br>    
- 			<br>    
-			<h2>Can I include a list of events on my site?</h2>
-			<p>Sign up for a <a href="https://developer.eventstack.co">Partner API key</a> and get started.</p>  
-		</div>
-    <div class="w3-col m6">
-<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/eventstackco">@eventstackco</a> 58dc3d66fa50bdd24bc05159 Thanks for posting to EventStack. We have your address. Your event is listed!</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847222868152688644">March 29, 2017</a></blockquote>
-<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="ht" dir="ltr"><a href="https://twitter.com/hashtag/EVSTK?src=hash">#EVSTK</a> <a href="https://twitter.com/hashtag/DELETE?src=hash">#DELETE</a> <a href="https://twitter.com/hashtag/ID?src=hash">#ID</a> 58dc3d66fa50bdd24bc05159</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847269477607657472">March 30, 2017</a></blockquote>
-<blockquote class="twitter-tweet" align="center" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/eventstackco">@eventstackco</a> This event has been removed:58dc3d66fa50bdd24bc05159</p>&mdash; Paul (@eventstackco) <a href="https://twitter.com/eventstackco/status/847285434623303682">March 30, 2017</a></blockquote>
-		</div>
-  </div>
-</div>		
-
-
-
-
 </div>
+	
+		<div class="w3-container w3-row w3-center  w3-padding-8" style="background-color:#414141;">
+      <span class="w3-large w3-text-white">Join thousands of kids learning technology by doing.</span>
+</div>	
+
+
+
+	
+
+
 						<!--/div-->
 					</div>
 				</div>
@@ -341,29 +276,23 @@ body, html {
 
   
 	
-<!-- Add my city -->
-<div class="w3-container w3-row w3-center  w3-padding-64" style="background-color:#414141;">
-      <span class="w3-large w3-text-white">Don't see your city listed?  Use #NewCity.</span>
-	<div style="text-align:center;"><a href="https://twitter.com/intent/tweet?button_hashtag=NewCity&text=%40eventstackco%20Please%20include%20my%20fair%20city%20named%20xyz" class="w3-btn  w3-middle  w3-round-large w3-white w3-border w3-border-white  w3-padding-large w3-large w3-margin-top  "><i class="fa fa-twitter">eventstackco</i></a></div>
-</div>
+
 	
 	<footer class="w3-container w3-row   w3-padding-64">
 		<div class="w3-col s1">&nbsp;
 		</div>
 		<div class="w3-col s4">
-    <span class="" style="font-weight:700">eventstack</span>
-    <br><a href="/chicago" style="text-decoration:none">cities</a>
-    <br><a href="/chicago" style="text-decoration:none">events</a>
-    <br><a href="#faq" style="text-decoration:none">posting</a>
-    <br><a href="" style="text-decoration:none">about</a>
-    <br><a href="https://developer.eventstack.co" style="text-decoration:none">api</a>
+    <span class="" style="font-weight:700">pablo</span>
+    <br><a href="#" style="text-decoration:none">curriculum</a>
+     <br><a href="#" style="text-decoration:none">schools</a>
+   <br><a href="#" style="text-decoration:none">about</a>
   </div>
   <div class="w3-col s4">
     <span class="" style="font-weight:700">support</span>
     <br><a href="#faq" style="text-decoration:none">faq</a>
-    <br><a href="" style="text-decoration:none">terms</a>
-    <br><a href="mailto:hello@eventstack.co" style="text-decoration:none"><i class="fa fa-envelope-o "></i>&nbsp;hello@eventstack.co</a>
-    <br><a href="https://twitter.com/eventstackco" style="text-decoration:none"><i class="fa fa-twitter"></i>&nbsp;eventstackco</a>
+    <br><a href="#" style="text-decoration:none">terms</a>
+    <br><a href="mailto:hello@trypablo.com" style="text-decoration:none"><i class="fa fa-envelope-o "></i>&nbsp;hello@trypablo.com</a>
+    <br><a href="https://twitter.com/pablotech" style="text-decoration:none"><i class="fa fa-twitter"></i>&nbsp;pablotech</a>
   </div>
   
 </footer>
@@ -444,10 +373,10 @@ $(document).ready(function(){
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-97700376-1', 'auto');
+  ga('create', 'UA-100783715-1', 'auto');
   ga('send', 'pageview');
 
-</script>   
+</script>  
 
 </body>
 </html>

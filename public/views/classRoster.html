@@ -3,80 +3,115 @@
 	<!--section layout="row" flex=""-->
 
 
-	<!-- ANGULAR MATERIAL SIDENAV LEFT -->
-	<md-sidenav md-component-id="left" class="md-sidenav-left">
-		<md-toolbar>
-			<h1 class="md-toolbar-tools">Sidenav Left</h1>
-		</md-toolbar>
-		<md-content>
-			<md-list flex>
-				<!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
-				<md-list-item class="md-2-line" ng-click="changeView(dashboard)">
-					<i class="material-icons md-avatar">home</i>
-					<div class="md-list-item-text" layout="column">
-						<h3>Home</h3></div>
-				</md-list-item>
-				<md-divider></md-divider>
-				<md-list-item class="md-2-line" ng-click="goAssignments()">
-					<i class="material-icons md-avatar">assignment</i>
-					<div class="md-list-item-text" layout="column">
-						<h3>Assignments</h3></div>
-				</md-list-item>
-				<md-subheader class="md-no-sticky">Teaching</md-subheader>
+		<!-- ANGULAR MATERIAL SIDENAV LEFT -->
+  <md-sidenav md-component-id="left" class="md-sidenav-left" >
+      <md-toolbar >
+        <h1 class="md-toolbar-tools"></h1>
+      </md-toolbar>
+     <md-content>
+      <md-list flex>
+        <!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
+					<i class="material-icons md-avatar" >assignment</i>
+          <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
+        </md-list-item>
+				<md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+       	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
 				 </md-list-item>
 	<!--only show the following stream, student, and about links on mobile view -->
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id)" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>stream</h3></div>
 					</md-list-item>
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/students')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>students</h3></div>
 					</md-list-item>					
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/about')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>about</h3></div>
 					</md-list-item>
 				</div>
 
-			</md-list>
+			<md-subheader ng-show="!user" class="md-no-sticky">Standard Curriculum</md-subheader>
+				<div ng-show="!user">
+	
+				<md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/1')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="K" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text"  layout="column"><h3>Kindergarten</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/2')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="1" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>First</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/3')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="2" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Second</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/4')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="3" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Third</h3></div>
+				</md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/5')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="4" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fourth</h3></div>
+				 </md-list-item>
+        <md-list-item class="md-2-line" ng-click="changeView('educate/curriculum/6')" >
+					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="5" shape="round"></ng-letter-avatar></span>
+          	<div class="md-list-item-text" layout="column"><h3>Fifth</h3></div>
+				 </md-list-item>			
+					
+				</div>				
+				
+
+			 </md-list>
 		</md-content>
-	</md-sidenav>
-	<!--/sidenav-->
+  </md-sidenav>
+<!--/sidenav-->
 
 
 
-
-	<!-- ANGULAR MATERIAL toolbar -->
-	<md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;">
-		<div class="md-toolbar-tools">
-			<md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
-				<i class="material-icons">menu</i>
-			</md-button>
-			<h1>
+<!-- ANGULAR MATERIAL toolbar -->
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
+      <div class="md-toolbar-tools">
+        <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
+          <i class="material-icons">menu</i>
+        </md-button>
+        <h1>
           <span class="hideOnMobile">{{thisKlass.name}}</span>
         </h1>
+				
+        <span flex></span>
+			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile" ng-show="(user && user.userType == student) || (user && user.isPremium == true && user.username == thisUsername)" >
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)"  name="stream">Stream</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" name="students">Students</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')"  name="about">About</md-nav-item>
+    </md-nav-bar>
+			  <span flex></span>
+		
+				<md-button ng-show="!user" class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
 
-
-			<span flex></span>
-			<md-nav-bar md-selected-nav-item="students" mdSelectedNavItem="students" class="hideOnMobile">
-				<md-nav-item md-nav-href="/class/{{thisKlass._id}}" name="stream">Stream</md-nav-item>
-				<md-nav-item md-nav-href="/class/{{thisKlass._id}}/students" name="students">Students</md-nav-item>
-				<md-nav-item md-nav-href="/class/{{thisKlass._id}}/about" name="about">About</md-nav-item>
-			</md-nav-bar>
-			<span flex></span>
-
-			<md-button ng-show="user._id == '58cab7d8796c46353244cf54'" class="md-raised" aria-label="Sign up" href="/signup" target="_self">Sign Up</md-button>
-
-			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
-	        <md-button class="md-hue-2"  ng-click="openMenu($mdOpenMenu, $event)">
+			<md-menu ng-show="user" md-position-mode="target-right bottom" md-offset="0 10">
+	        <md-button  ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -96,10 +131,12 @@
           </md-button>
         </md-menu-item>
       </md-menu-content>
-    </md-menu>	
-		</div>
-	</md-toolbar>
-	<!-- /ANGULAR MATERIAL TOOLBAR -->
+    </md-menu>		
+      </div>
+
+			<!-- /ANGULAR MATERIAL TOOLBAR -->
+</md-toolbar>	
+
 
 
 
@@ -124,9 +161,9 @@
 						</md-button>
 						<md-menu-content width="3">
 							<md-menu-item>
-								<md-button ng-click="">
+								<md-button ng-click="" disabled="disabled">
 									<div class="valign-center">
-										<i class="material-icons">person</i>Profile
+										<i class="material-icons">person</i>Sort
 									</div>
 								</md-button>
 							</md-menu-item>
@@ -138,9 +175,9 @@
 							</md-menu-item>
 							<md-menu-divider></md-menu-divider>
 							<md-menu-item>
-								<md-button href="/logout" target="_self">
+								<md-button href="/logout" target="_self" disabled="disabled">
 									<div class="valign-center">
-										<i class="material-icons">exit_to_app</i>Logout
+										<i class="material-icons">exit_to_app</i>Select All
 									</div>
 								</md-button>
 							</md-menu-item>
@@ -163,7 +200,7 @@
 					</h4>
 							</md-menu-item>
 							<md-menu-item>
-								<md-button ng-click="resetKlassCode()">
+								<md-button ng-disabled="thisKlass.teacherId._id != user._id" ng-click="resetKlassCode()">
 									<div class="valign-center">
 										<i class="material-icons">autorenew</i>Reset
 									</div>
@@ -174,6 +211,7 @@
 				</div>
 			</md-toolbar>
 		
+			
 					<!--default block-->
 			<md-card ng-hide="studentList.length > 0">        
           <md-card-title>

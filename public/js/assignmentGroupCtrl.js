@@ -1,29 +1,39 @@
 //var Klass = require('../../app/models/klass');
 
 //angular.module('klassCtrl', ['ui.bootstrap'])
-angular.module('assignmentGroupCtrl', ['ui.bootstrap', 'ngMaterial'])
+angular.module('assignmentGroupCtrl', ['ui.bootstrap', 'ngMaterial', 'youtube-embed'])
 
 .controller('assignmentGroupCtrl',  function($scope, $http, services, $modal, $log, $routeParams, agRecord, assignmentList, user, $mdDialog, $mdSidenav, $location) {
   
-	//$scope.klassName = klassRecord.name;
-	$scope.thisAG = agRecord.data;
-	//$scope.thisAG._id = agRecord.data._id;
-	$scope.thisKlassId = $routeParams.classId;
-	$scope.assignmentList = assignmentList.data;
-			$scope.user = user.data;
-			$scope.userId = user.data._id;
-			$scope.email = user.data.local.email;
-			$scope.fname = user.data.firstName;
-	
+	$scope.anotherGoodOne = 'https://www.youtube.com/watch?v=KsUX7Piez-0';
 
+	//$scope.klassName = klassRecord.name;
+	$scope.thisUsername = $routeParams.username;	 
+	$scope.thisKlassNum = $routeParams.klassnum;	 
+
+	$scope.thisAG = agRecord.data;
+	//alert(JSON.stringify($scope.thisAG));
+	//$scope.thisAG._id = agRecord.data._id;
+	//$scope.thisKlassId = $routeParams.classId;
+			$scope.user = user.data;
+			//$scope.userId = user.data._id;
+	
+if (assignmentList){
+		$scope.assignmentList = assignmentList.data;
+} else {
+		services.getAssignmentsForGroup($scope.thisAG._id)
+		.success(function(data) {
+			$scope.assignmentList = data;
+		});
+}
 	
 
 	
 	//populate leaderboard
-	services.getStudentsInKlass($scope.thisKlassId)
-		.success(function(data) {
-			$scope.leaderboard = data;
-		});
+//	services.getStudentsInKlass($scope.thisKlassId)
+//		.success(function(data) {
+//			$scope.leaderboard = data;
+//		});
 	
 			services.getKlasses()
 				.success(function(data2) {
@@ -34,27 +44,28 @@ angular.module('assignmentGroupCtrl', ['ui.bootstrap', 'ngMaterial'])
     $location.path('/'+view); // path not hash
   };
 
-	$scope.classView = function(id){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
-		else 
-    	$location.path('/class/' + id);
+	$scope.classView = function(username, klassNum){
+		//if ($scope.user.userType == "student")
+    //	$location.path('/studentclass/' + id);
+		//else 
+    	$location.path('/educate/' + username + '/' + klassNum);
   };
 	
 	$scope.goAssignments = function() {
-		if ($scope.user.userType == "student")
-    	$location.path('/studentassignments');
-		else 
-    	$location.path('/assignments'); 	};
+		//if ($scope.user.userType == "student")
+    //	$location.path('/studentassignments');
+		//else 
+    	$location.path('/assignments'); 
+	};
 
 	$scope.goProfile = function(){
     $location.path('/profile'); // path not hash
   };
 	
 	$scope.goHome = function(){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentdashboard');
-		else 
+	//	if ($scope.user.userType == "student")
+  //  	$location.path('/studentdashboard');
+	//	else 
     	$location.path('/dashboard');  
 	};
 
@@ -64,8 +75,10 @@ angular.module('assignmentGroupCtrl', ['ui.bootstrap', 'ngMaterial'])
 		description: null,
 		assignmentGroupId: $scope.thisAG._id,
 		due: null,
+		icon: '',
 		numComplete: 0,
-		numNotComplete: 0
+		numNotComplete: 0,
+		assignmentNum: 0
 	};
 	
 	$scope.newAssignment = angular.copy($scope.masterAssignment);
@@ -158,12 +171,14 @@ angular.module('assignmentGroupCtrl', ['ui.bootstrap', 'ngMaterial'])
 			  services.createAssignment($scope.newAssignment)
 				.then(function(data) {
 					console.log('createAssignment data:' + JSON.stringify(data) + ' id:' + data.data._id);
-					$log.log('createAssignment data:' + JSON.stringify(data) + ' id:' + data.data._id)
+					//$log.log('createAssignment data:' + JSON.stringify(data) + ' id:' + data.data._id)
 						//set id of klass just created
 					$scope.newAssignment._id = data.data._id;
+					$scope.newAssignment.assignmentNum = data.data.assignmentNum;
 				  $scope.newAssignment.numNotComplete = data.data.numNotComplete;
 				  $scope.newAssignment.numComplete = 0;
 				  $scope.newAssignment.due = $scope.newAssignment.due.toISOString();
+					//alert(JSON.stringify(data));
 					$scope.assignmentList.unshift($scope.newAssignment);
 
 				});

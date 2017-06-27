@@ -23,20 +23,20 @@
 				        <md-subheader class="md-no-sticky">Teaching</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+        	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
 				 </md-list-item>
 	<!--only show the following stream, student, and about links on mobile view -->
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id)" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>stream</h3></div>
 					</md-list-item>
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/students')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>students</h3></div>
 					</md-list-item>					
-					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass._id+'/about')" >
+					<md-list-item ng-if="klass._id==thisKlass._id" class="md-2-line onlyOnMobile" ng-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')" >
 							<i class="material-icons md-avatar" >keyboard_arrow_right</i>
 						<div class="md-list-item-text" layout="column"><h3>about</h3></div>
 					</md-list-item>
@@ -50,7 +50,7 @@
 
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar class="md-whiteframe-z4" style="position: fixed; z-index:10;" >
+    <md-toolbar class="" style="position: fixed; z-index:10;" >
       <div class="md-toolbar-tools">
         <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
           <i class="material-icons">menu</i>
@@ -59,25 +59,21 @@
           <span class="hideOnMobile">{{thisKlass.name}}</span>
         </h1>
 				
-	
-				
-
-				
         <span flex></span>
-			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile">
-      <md-nav-item md-nav-click="classView(thisKlass._id)"  name="stream">Stream</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/students')" name="students">Students</md-nav-item>
-      <md-nav-item md-nav-click="classView(thisKlass._id+'/about')"  name="about">About</md-nav-item>
+			<md-nav-bar md-selected-nav-item="stream" mdSelectedNavItem="stream" class="hideOnMobile" ng-show="(user && user.userType == student) || (user && user.isPremium == true && user.username == thisUsername)">
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum)"  name="stream">Stream</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/students')" name="students">Students</md-nav-item>
+      <md-nav-item md-nav-click="classView(thisKlass.teacherId.username, thisKlass.klassNum+'/about')"  name="about">About</md-nav-item>
     </md-nav-bar>
 			  <span flex></span>
 
-				<md-button ng-show="user._id == '58cab7d8796c46353244cf54'" class="md-raised" aria-label="Sign up" href="/signup" target="_self">Sign Up</md-button>
+				<md-button ng-show="!user" class="md-raised" aria-label="Sign up" href="/login" target="_self">Login</md-button>
 
 				
-			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
+			<md-menu ng-show="user" md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button   ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -113,20 +109,20 @@
 		<div class="col-md-3">
 			
 		<!--avatar section-->
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
+			<md-card style="border-radius:20px">
+			<div class="panel" style="border-radius:20px">
+				<div class="panel-heading" style="border-radius:20px">
 					  <div layout="column" flex layout-align="center center">
 							<ng-letter-avatar  height="120" width="120"  data="{{thisKlass.name}}" shape="round"></ng-letter-avatar>
 <h5>
-	{{thisKlass.teacherId.name}}					
+	Teacher: {{thisKlass.teacherId.firstName}}					
 							</h5>
 					</div>
 					
 					<hr>
 					
  					  <div layout="row" flex layout-align="center center">
-     <md-button class="md-raised" disabled="disabled">avatar</md-button>
+     <md-button class="md-raised" disabled="disabled">{{thisKlass.name}}</md-button>
 					</div>
 					
 				</div>
@@ -134,9 +130,9 @@
 			</md-card>
 
 			
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
+			<md-card ng-show="user.neverShow" style="border-radius:20px">
+			<div class="panel" style="border-radius:20px">
+				<div class="panel-heading" style="border-radius:20px">
 					<h4 class="">Assignments <a class="text-muted" ng-href="/assignments"> all</a></h4>
 					<hr>
 
@@ -162,12 +158,14 @@
 			</div><!--/panel--->
 			</md-card>
 	
-			<md-card>
-			<div class="panel">
-				<div class="panel-heading">
-					<h4 class="">Join Code</h4>
+			<md-card ng-show="user.isPremium" style="border-radius:20px">
+			<div class="panel" style="border-radius:20px">
+							  <div layout="column" flex layout-align="center center">
+		<div class="panel-heading" style="border-radius:20px" >
+					<h4 class="" layout-align="center center">Join Code</h4>
 					<h5 class="">{{thisKlass.joinCode}}</h5>
 					<br/>
+									</div>
 				</div>
 			</div><!--/panel--->
 			</md-card>
@@ -179,11 +177,15 @@
 			<!--default block-->
     <form name="signupform">
 			
-			<md-card >        
-          <md-card-title>
+			<md-card style="border-radius:20px">        
+          <md-card-title style="border-radius:20px">
         		<md-card-title-text>
             <span class="md-headline" >{{thisKlass.name}}</span>
 	<br/>
+														</md-card-title-text>
+					</md-card-title>
+					<md-card-content>
+						
 					<md-input-container ng-show="!isReadOnly" class="md-block" >
           <label>Modify Class Name</label>
           <input ng-model="thisKlass.name" name="name">
@@ -198,25 +200,20 @@
             <label>Description</label>
             <input  ng-readonly="isReadOnly" ng-model="thisKlass.longDesc" name="longDesc">
           </md-input-container>
-							
-							<span class="md-subhead"> Points and Levels On?<h4 ng-show="isReadOnly">{{thisKlass.pointsOn ? 'Yes' : 'No'}}</h4></span>
-						</md-card-title-text>
-					</md-card-title>
-					<md-card-content>
-				
-		 <md-radio-group ng-model="thisKlass.pointsOn" required name="pointsOn" ng-show="!isReadOnly">
-								<div layout-gt-sm="row">
+					
 
-									<md-radio-button name="pointsOn" ng-value=true class="md-primary">On</md-radio-button><span flex=5></span>
-      						<md-radio-button  name="pointsOn" ng-value=false>Off </md-radio-button><span flex=5></span>
+						
+						<md-input-container class="md-block" flex-gt-sm>
 
-			 </div>
-    </md-radio-group>
+<button class="btn btn-primary" ng-click="togglePoints(true)" ng-disabled="isReadOnly" ng-if="!thisKlass.pointsOn">Points and Levels: Disabled &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+<button class="btn btn-danger" ng-click="togglePoints(false)" ng-disabled="isReadOnly" ng-if="thisKlass.pointsOn">Points and Levels: Enabled &nbsp;<md-icon class="material-icons" style="color:white">sync</md-icon></button>
+					</md-input-container>
+
 						
 
 <br/>	
 						<span flex></span>
-					<md-button ng-click="setEditMode()" ng-show="isReadOnly" class="md-raised md-primary">Edit</md-button>
+					<md-button ng-click="setEditMode()" ng-show="isReadOnly && thisKlass.teacherId._id == user._id" class="md-raised md-primary">Edit</md-button>
 	<md-button ng-click="updateClass()" ng-show="!isReadOnly" class="md-raised md-accent">Save</md-button>
 		<md-button ng-click="cancelEditMode()" ng-show="!isReadOnly"  class="md-raised">Cancel</md-button>
 				</md-card-content>

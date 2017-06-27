@@ -1,15 +1,26 @@
 
 angular.module('assignmentDetailsCtrl', ['ui.bootstrap', 'ngMaterial'])
 
-.controller('assignmentDetailsCtrl',  function($scope, $http, services, $modal, $log, $routeParams, user, assignmentRecord, klassRecord, $mdDialog, $mdSidenav, $location) {
+.controller('assignmentDetailsCtrl',  function($scope, $http, services, $modal, $log, $routeParams, user, agRecord, klassRecord, $mdDialog, $mdSidenav, $location) {
 
+	//populate leaderboard
+	services.getAssignment2(agRecord.data._id, $routeParams.asid)
+		.success(function(data) {
+      $scope.thisAssignment = data;
+			$scope.dt = new Date($scope.thisAssignment.due);
+			$scope.pt = $scope.thisAssignment.awardUponSubmit;
+			if ($scope.thisAssignment.work) $scope.statusMessage = 'draft saved';
+			if ($scope.thisAssignment.isSubmitted) $scope.statusMessage = 'turned in';		
+		});
+  
 $scope.user = user.data;
-$scope.thisAssignment = assignmentRecord.data;
 $scope.thisKlass = klassRecord.data;
-	 
+$scope.thisUsername = $routeParams.username;
+$scope.thisKlassNum = $routeParams.klassnum;	 
+$scope.thisAGNum = $routeParams.agnum;	 
+	
 $scope.isReadOnly = true;
-$scope.dt = new Date($scope.thisAssignment.due);
-$scope.pt = $scope.thisAssignment.awardUponSubmit;
+
 
 $scope.setEditMode = function() {
 	$scope.isReadOnly = false;
@@ -48,18 +59,18 @@ $scope.cancelEditMode = function() {
     });
   };	
 	
-if ($scope.thisAssignment.work) $scope.statusMessage = 'draft saved';
-if ($scope.thisAssignment.isSubmitted) $scope.statusMessage = 'turned in';
+
 
 $scope.changeView = function(view){
    $location.path('/'+view); // path not hash
 };
 
-	$scope.classView = function(id){
+	$scope.agView = function(clid, agid){
 		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
+    	$location.path('/studentclass/' + clid + '/ag/' + agid);
 		else 
-    	$location.path('/class/' + id);
+    	//$location.path('/class/' + clid + '/ag/' + agid);
+    	$location.path('/educate/' + $scope.thisUsername + '/' + $scope.thisKlassNum + '/' + $scope.thisAGNum);
   };
 	
 	$scope.goAssignments = function() {

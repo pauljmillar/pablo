@@ -8,12 +8,15 @@ angular.module('klassCtrl', ['ui.bootstrap', 'ngMaterial'])
 	//$scope.klassName = klassRecord.name;
 	var original = klassRecord.data;
 	$scope.thisKlass = klassRecord.data;
+	$scope.thisUsername = $routeParams.username;	 
 
+	$scope.assignmentGroupList = {};
 	$scope.assignmentGroupList = assignmentGroupList.data;
+	
 			$scope.user = user.data;
-			$scope.userId = user.data._id;
-			$scope.email = user.data.local.email;
-			$scope.fname = user.data.firstName;
+			//$scope.userId = user.data._id;
+			//$scope.email = user.data.local.email;
+			//$scope.fname = user.data.firstName;
 	
 
 	
@@ -32,11 +35,11 @@ angular.module('klassCtrl', ['ui.bootstrap', 'ngMaterial'])
     $location.path('/'+view); // path not hash
   };
 
-	$scope.classView = function(id){
-		if ($scope.user.userType == "student")
-    	$location.path('/studentclass/' + id);
-		else 
-    	$location.path('/class/' + id);
+	$scope.classView = function(username, klassNum){
+		//if ($scope.user.userType == "student")
+    //	$location.path('/studentclass/' + id);
+		//else 
+    	$location.path('/educate/' + username + '/' + klassNum);
   };
 	
 	$scope.goAssignments = function() {
@@ -56,20 +59,25 @@ angular.module('klassCtrl', ['ui.bootstrap', 'ngMaterial'])
     	$location.path('/dashboard');  
 	};
 
-  $scope.showDeleteConfirm = function(ev) {
+	$scope.goHomePage = function(){
+		window.location = "/"
+  };
+	
+  $scope.showDeleteConfirm = function(ev, ind, agid) {
     // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
           .title('Remove this set of assignments from your class?')
-          .textContent('All of the banks have agreed to forgive you your debts.')
+          .textContent('Any work submitted by students will be deleted.' + agid)
           .ariaLabel('Lucky day')
           .targetEvent(ev)
           .ok('Yes, remove')
           .cancel('Keep it');
 
     $mdDialog.show(confirm).then(function() {
-      $scope.status = 'You decided to get rid of your debt.';
+				services.deleteKlassAssignmentGroup($scope.thisKlass._id,agid);
+				$scope.assignmentGroupList.splice(ind,1);
     }, function() {
-      $scope.status = 'You decided to keep your debt.';
+      //$scope.status = 'You decided to keep your debt.';
     });
   };	
 	
@@ -161,14 +169,22 @@ angular.module('klassCtrl', ['ui.bootstrap', 'ngMaterial'])
 				//do nothing
 			} else {
 				$scope.newAssignmentGroup.klassId = klassId;
+				//alert('about to call');
 			  services.createAssignmentGroup($scope.newAssignmentGroup)
 				.then(function(data) {
+					//alert('in then');
 					console.log('createAssignmentGroup data:' + JSON.stringify(data) + ' id:' + data.data._id);
 					$log.log('createAssignmentGroup data:' + JSON.stringify(data) + ' id:' + data.data._id)
 						//set id of klass just created
 					$scope.newAssignmentGroup._id = data.data._id;
-					var klassAssignmentGroup = {'_id': data.data._id, 'klassId': $scope.newAssignmentGroup.klassId, 'assignmentGroupId': {'icon': $scope.newAssignmentGroup.icon, 'name': $scope.newAssignmentGroup.name } };
-					$scope.assignmentGroupList.unshift(klassAssignmentGroup);
+					$scope.newAssignmentGroup.assignmentGroupNum = data.data.assignmentGroupNum;
+					alert('done'+data.data._id);
+					alert('length:'+$scope.assignmentGroupList.length);
+					//var klassAssignmentGroup = {'_id': data.data._id, 'klassId': $scope.newAssignmentGroup.klassId, 'assignmentGroupId': {'icon': $scope.newAssignmentGroup.icon, 'name': $scope.newAssignmentGroup.name } };
+					//alert('new:'+JSON.stringify($scope.newAssignmentGroup));
+					//alert('list:'+JSON.stringify($scope.assignmentGroupList));
+					//	$scope.assignmentGroupList.unshift(klassAssignmentGroup);
+					$scope.assignmentGroupList.unshift($scope.newAssignmentGroup);
 
 				});
 			$mdDialog.hide();

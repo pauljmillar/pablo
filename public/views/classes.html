@@ -10,25 +10,35 @@
       </md-toolbar>
      <md-content>
       <md-list flex>
-        <!--md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader-->
-        <md-list-item class="md-2-line" ng-click="goHome()" >
+        <!--home to dashboard if logged in, else to / -->
+        <md-list-item ng-show="user" class="md-2-line" ng-click="changeView(dashboard)" >
 					<i class="material-icons md-avatar" >home</i>
           <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
         </md-list-item>
-			<md-divider ></md-divider>
-        <md-list-item class="md-2-line" ng-click="goAssignments()">
+        <md-list-item ng-show="!user" class="md-2-line" ng-click="goHomePage()" >
+					<i class="material-icons md-avatar" >home</i>
+          <div class="md-list-item-text" layout="column"><h3>Home</h3></div>
+        </md-list-item>
+	        <md-list-item class="md-2-line" ng-click="changeView('educate')">
+					<i class="material-icons md-avatar" >chrome_reader_mode</i>
+          <div class="md-list-item-text" layout="column"><h3>Curriculum</h3></div>
+        </md-list-item>
+				<md-divider ></md-divider>
+        <md-list-item ng-show="user.isPremium || user.userType == 'student'" class="md-2-line" ng-click="goAssignments()">
 					<i class="material-icons md-avatar" >assignment</i>
           <div class="md-list-item-text" layout="column"><h3>Assignments</h3></div>
         </md-list-item>
-				        <md-subheader class="md-no-sticky">Teaching</md-subheader>
+				        <md-subheader ng-show="user" class="md-no-sticky">Classrooms</md-subheader>
 
 				<div ng-repeat="klass in klassList track by $index">
-        	<md-list-item class="md-2-line" ng-click="classView(klass._id)" >
+        	<md-list-item class="md-2-line" ng-click="classView(klass.teacherId.username, klass.klassNum)" >
 					<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data="{{klass.name}}" shape="round"></ng-letter-avatar></span>
           	<div class="md-list-item-text" layout="column"><h3>{{klass.name}}</h3></div>
-        	</md-list-item>
+				 </md-list-item>
+
 				</div>
 
+			
 			 </md-list>
 		</md-content>
   </md-sidenav>
@@ -38,13 +48,13 @@
 
 
 <!-- ANGULAR MATERIAL toolbar -->
-    <md-toolbar  class="md-whiteframe-z4" style="position: fixed;" >
+    <md-toolbar  class="" style="position: fixed;" >
       <div class="md-toolbar-tools">
         <md-button ng-click="openLeftMenu()" class="md-icon-button" aria-label="Settings">
           <i class="material-icons">menu</i>
         </md-button>
         <h1>
-          <span>Home</span>
+          <span>Classrooms for {{user.username}}</span>
         </h1>
         <span flex></span>
 
@@ -57,7 +67,7 @@
 			<md-menu md-position-mode="target-right bottom" md-offset="0 10">
 	        <md-button   ng-click="openMenu($mdOpenMenu, $event)">
           <div class="valign-center hideOnMobile">
-						{{user.firstName}}	<i class="material-icons">arrow_drop_down</i>
+						{{user.username}}	<i class="material-icons">arrow_drop_down</i>
 					</div>
           <div class="valign-center onlyOnMobile">
 					<i class="material-icons">person</i>
@@ -94,12 +104,13 @@
 		<!-- class cards -->
 		<div ng-repeat="klass in klassList track by $index"> <!-- track by klass.id"-->
           <div class="col-lg-3 col-md-4 col-sm-6">
-			<md-card>
-			        <md-card-title style="height:160px; background-color: #2196F3">
+			<md-card style="border-radius: 20px;">
+			        <md-card-title style="height:160px; background-color: #2196F3; border-radius:20px 20px 0 0">
 					<md-card-title-text>	
 						<h3 style="color:#fff; ">
 												<span class="md-avatar"><ng-letter-avatar  height="40" width="40"  data={{klass.name}} shape="round"></ng-letter-avatar></span>							
-							<a ng-href="/class/{{klass._id}}" style="text-decoration:none; color:#fff;"> {{klass.name}}</a>
+							<!--a ng-href="/class/{{klass._id}}" style="text-decoration:none; color:#fff;"> {{klass.name}}</a-->
+							<a ng-href="/educate/{{klass.teacherId.username}}/{{klass.klassNum}}" style="text-decoration:none; color:#fff;"> {{klass.name}}</a>
 						</h3>
 
 						<h5 style="color:#fff; ">{{klass.shortDesc}}</h5>
