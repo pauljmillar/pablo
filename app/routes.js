@@ -104,11 +104,21 @@ module.exports = function(app, passport) {
 
 			user.save(function(err) {
 				if (err) {return res.send(err);}
+				
+				//now update username in any klass record
+				Klass.findOneAndUpdate({
+					teacherId: req.params.user_id
+				}, {
+					$set: {
+						username: req.body.username
+					}
+				}, function(err, doc2) {
+						if (err) {return res.send(err);}
+				
+						res.json({ message: 'User updated!' });
 
-
-				res.json({
-					message: 'User updated!'
 				});
+
 			});
 
 		}); 
