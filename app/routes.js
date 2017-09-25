@@ -1429,7 +1429,7 @@ transporter.sendMail(mailOptions, function(error, info){
           service: 'Gmail',
             auth: {
               user: "paul.millar@gmail.com",
-              pass: "ventura123"
+              pass: "XXXX"
             }
           });
 
